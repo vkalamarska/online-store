@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import Logo from "../assets/a-logo.png";
+import Header from "./header";
+import { useQuery, gql } from "@apollo/client";
+import Product from "./product";
 
 const StoreWrapper = styled.section`
   display: flex;
@@ -8,87 +10,100 @@ const StoreWrapper = styled.section`
   color: black;
 `;
 
-const Header = styled.section`
-  width: 100%;
-  height: 80px;
-  padding: 0 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0px 4px 14px -10px #43464e;
-`;
-
-const CategoryContainer = styled.div`
-  display: flex;
-`;
-
-const Category = styled.div`
-  font-size: 14px;
-  color: black;
-
-  &:hover {
-    color: #5ece7b;
-  }
-`;
-
-const LogoButton = styled.button`
-  background-image: url(${Logo.src});
-  padding: 20px;
-  background-color: transparent;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-`;
-
 const ItemsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   padding: 50px;
 `;
 
-const ItemContainer = styled.div`
-  height: 444px;
-  width: 386px;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
+interface IApiResponse {
+  name: string;
+  products: IProduct[];
+}
 
-  &:hover {
-    box-shadow: 0px 0px 14px -8px #43464e;
-  }
-`;
+interface IProduct {
+  id: string;
+  name: string;
+  inStock: boolean;
+  gallery: string[];
+  description: string;
+  category: string;
+  attributes: IAttribute[];
+  prices: IPrices[];
+  brand: string;
+}
 
-const ItemImage = styled.div`
-  height: 80%;
-  width: 100%;
-`;
-const ItemName = styled.span`
-  margin: 25px 0 10px 0;
-  font-size: 18px;
-  color: #1d1f22;
-`;
+interface IAttribute {
+  id: string;
+  name: string;
+  type: string;
+  items: IItem[];
+}
 
-const ItemPrice = styled.span`
-  font-size: 18px;
-  color: black;
-  font-weight: bold;
-`;
+interface IItem {
+  displayValue: string;
+  value: string;
+  id: string;
+}
+
+interface IPrices {
+  currency: {
+    label: string;
+    symbol: string;
+  };
+  amount: number;
+}
 
 const StoreExplorer = () => {
+  const CATEGORIES_QUERY = gql`
+    {
+      categories {
+        name
+        products {
+          id
+          name
+          inStock
+          gallery
+          description
+          category
+          attributes {
+            id
+            name
+            type
+            items {
+              displayValue
+              value
+              id
+            }
+          }
+          prices {
+            currency {
+              label
+              symbol
+            }
+            amount
+          }
+          brand
+        }
+      }
+    }
+  `;
+
+  const { data, loading, error } = useQuery<{ categories: IApiResponse[] }>(
+    CATEGORIES_QUERY
+  );
+
+  if (loading) return <div>Loading</div>;
+  if (error) return <pre>{error.message}</pre>;
+
   return (
     <StoreWrapper>
-      <Header>
-        <CategoryContainer>
-          <Category>CLOTHES</Category>
-        </CategoryContainer>
-        <LogoButton></LogoButton>
-      </Header>
+      <Header />
       <ItemsWrapper>
-        <ItemContainer>
-          <ItemImage></ItemImage>
-          <ItemName>Apollo Running Short</ItemName>
-          <ItemPrice>$50</ItemPrice>
-        </ItemContainer>
+        {data?.categories[0].products.map((p) => (
+          <Product product={p} />
+        ))}
       </ItemsWrapper>
     </StoreWrapper>
   );
