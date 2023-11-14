@@ -1,3 +1,4 @@
+import { ICategory, IProduct } from "@/hooks/useStoreData";
 import styled from "styled-components";
 
 const ItemContainer = styled.div`
@@ -33,19 +34,36 @@ const ItemName = styled.span`
   color: #1d1f22;
 `;
 
-const ItemPrice = styled.span`
+const ItemPriceContainer = styled.span`
+  display: flex;
+`;
+
+const Currency = styled.span`
   font-size: 18px;
   color: black;
   font-weight: bold;
 `;
 
-const Product = ({ product }) => {
+const ItemIPrice = styled.span`
+  font-size: 18px;
+  color: black;
+  font-weight: bold;
+`;
+
+interface IProps {
+  product: IProduct;
+}
+
+const Product = ({ product }: IProps) => {
   return (
     <ItemContainer>
       <ItemImage imageUrl={product.gallery[0]}></ItemImage>
       <ItemDescription>
         <ItemName>{product.name}</ItemName>
-        <ItemPrice>$50</ItemPrice>
+        <ItemPriceContainer>
+          <Currency>{product.prices[0].currency.symbol}</Currency>
+          <ItemIPrice>{product.prices[0].amount}</ItemIPrice>
+        </ItemPriceContainer>
       </ItemDescription>
     </ItemContainer>
   );
