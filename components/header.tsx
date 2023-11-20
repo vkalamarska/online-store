@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Logo from "../assets/logo.png";
-import Basket from "../assets/basket.png";
+import ShoppingCart from "../assets/shopping-cart.png";
 import Currency from "./currency-dropdown";
 import { ICategory, ICurrency } from "@/hooks/useStoreData";
 
@@ -8,8 +8,6 @@ const HeaderWrapper = styled.section`
   width: 100%;
   height: 60px;
   padding: 0 50px;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -39,22 +37,23 @@ const Category = styled.button`
 
 const LogoButton = styled.button`
   background-image: url(${Logo.src});
-  padding: 17px;
+  padding: 15px;
   background-color: transparent;
   background-repeat: no-repeat;
   background-position: center;
   border: none;
+  cursor: pointer;
 `;
 
-const BasketContainer = styled.div`
+const ShoppingCartContainer = styled.div`
   display: flex;
   grid-column: 3/4;
   justify-content: flex-end;
 `;
 
-const BasketIcon = styled.button`
-  background-image: url(${Basket.src});
-  padding: 10px;
+const ShoppingCartIcon = styled.button`
+  background-image: url(${ShoppingCart.src});
+  padding: 9px;
   background-color: transparent;
   background-size: 100%;
   background-repeat: no-repeat;
@@ -67,6 +66,7 @@ interface IProps {
   allCurrencies: ICurrency[];
   currentCurrency: string;
   handleSelectedCurrency: (curr: ICurrency) => void;
+  handleSelectedCategory: (cat: ICategory) => void;
 }
 
 const Header = ({
@@ -74,23 +74,26 @@ const Header = ({
   allCurrencies,
   currentCurrency,
   handleSelectedCurrency,
+  handleSelectedCategory,
 }: IProps) => {
   return (
     <HeaderWrapper>
       <CategoryContainer>
         {categories?.map((c) => (
-          <Category>{c.name.toUpperCase()}</Category>
+          <Category onClick={() => handleSelectedCategory(c)}>
+            {c.name.toUpperCase()}
+          </Category>
         ))}
       </CategoryContainer>
       <LogoButton></LogoButton>
-      <BasketContainer>
+      <ShoppingCartContainer>
         <Currency
           allCurrencies={allCurrencies}
           currentCurrency={currentCurrency}
           handleSelectedCurrency={handleSelectedCurrency}
         ></Currency>
-        <BasketIcon></BasketIcon>
-      </BasketContainer>
+        <ShoppingCartIcon></ShoppingCartIcon>
+      </ShoppingCartContainer>
     </HeaderWrapper>
   );
 };

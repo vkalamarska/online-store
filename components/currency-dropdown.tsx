@@ -5,9 +5,9 @@ import { useState } from "react";
 const CurrencyWrapper = styled.div``;
 
 const ChosenCurrency = styled.div`
-  margin: 0 16px;
+  margin: 0 22px;
   color: #1d1f22;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
 `;
 
@@ -29,9 +29,12 @@ const ListItem = styled.li`
 
 const CurrencySymbol = styled.div`
   margin-right: 10px;
+  font-size: 16px;
 `;
 
-const CurrencyLabel = styled.div``;
+const CurrencyLabel = styled.div`
+  font-size: 16px;
+`;
 
 interface IProps {
   allCurrencies: ICurrency[];
@@ -44,8 +47,6 @@ const Currency = ({
   currentCurrency,
   handleSelectedCurrency,
 }: IProps) => {
-  console.log(allCurrencies);
-
   const [isOpen, setIsOpen] = useState(false);
 
   const toggling = () => setIsOpen(!isOpen);

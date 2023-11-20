@@ -12,13 +12,22 @@ const ItemsWrapper = styled.div`
 interface IProps {
   categories: ICategory[];
   currentCurrency: string;
+  currentCategory: string;
 }
 
-const ItemsContainer = ({ categories, currentCurrency }: IProps) => {
+const ItemsContainer = ({
+  categories,
+  currentCurrency,
+  currentCategory,
+}: IProps) => {
+  const selectedCategory = categories.find(
+    (category) => category.name === currentCategory
+  );
+
   return (
     <ItemsWrapper>
-      {categories[0]?.products.map((p) => (
-        <Product product={p} />
+      {selectedCategory?.products.map((p) => (
+        <Product product={p} currentCurrency={currentCurrency} />
       ))}
     </ItemsWrapper>
   );

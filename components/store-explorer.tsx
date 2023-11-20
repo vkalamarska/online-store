@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import Header from "./header";
-import { useQuery, gql } from "@apollo/client";
 import ItemsContainer from "./items-container";
 import { useEffect, useState } from "react";
-import useStoreData, { ICurrency } from "@/hooks/useStoreData";
+import useStoreData, { ICategory, ICurrency } from "@/hooks/useStoreData";
 
 const StoreWrapper = styled.section`
   display: flex;
@@ -17,6 +16,8 @@ const StoreExplorer = () => {
 
   const [currentCurrency, setCurrentCurrency] = useState("");
 
+  const [currentCategory, setCurrentCategory] = useState("");
+
   useEffect(() => {
     const initialUnit =
       data?.categories[0].products[0].prices[0].currency?.symbol;
@@ -24,11 +25,21 @@ const StoreExplorer = () => {
     setCurrentCurrency(initialUnit);
   }, [data]);
 
+  useEffect(() => {
+    const initialCategory = data?.categories[0].name;
+    if (!initialCategory) return;
+    setCurrentCategory(initialCategory);
+  }, [data]);
+
   const allCurrencies =
     data?.categories[0].products[0].prices.map((price) => price.currency) || [];
 
   const handleSelectedCurrency = (currency: ICurrency) => {
     setCurrentCurrency(currency.symbol);
+  };
+
+  const handleSelectedCategory = (category: ICategory) => {
+    setCurrentCategory(category.name);
   };
 
   if (loading || !data) return <div>Loading</div>;
@@ -41,10 +52,12 @@ const StoreExplorer = () => {
         allCurrencies={allCurrencies}
         currentCurrency={currentCurrency}
         handleSelectedCurrency={handleSelectedCurrency}
+        handleSelectedCategory={handleSelectedCategory}
       />
       <ItemsContainer
         categories={data.categories}
         currentCurrency={currentCurrency}
+        currentCategory={currentCategory}
       />
     </StoreWrapper>
   );

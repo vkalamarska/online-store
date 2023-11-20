@@ -1,26 +1,74 @@
-import { ICategory, IProduct } from "@/hooks/useStoreData";
+import { IProduct } from "@/hooks/useStoreData";
 import styled from "styled-components";
+import ShoppingCart from "../assets/to-shopping-cart.png";
 
-const ItemContainer = styled.div`
+const ToShoppingCart = styled.div`
+  height: 55px;
+  width: 55px;
+  visibility: hidden;
+  display: flex;
+  justify-content: flex-end;
+  grid-column: 5/6;
+  grid-row: 6/7;
+  z-index: 3;
+  background-image: url(${ShoppingCart.src});
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
+const ItemContainer = styled.div<{ outOfStock: boolean }>`
   height: 460px;
-  width: 380px;
+  width: 370px;
   margin: 10px 8px;
   padding: 15px;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 
   &:hover {
     box-shadow: 0px 0px 16px -7px #43464e;
+    ${ToShoppingCart} {
+      visibility: visible;
+    }
   }
+
+  ${(p) =>
+    p.outOfStock &&
+    `
+      filter: grayscale(90%) opacity(40%);
+      cursor: auto;
+    `}
+`;
+
+const ItemImageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
 `;
 
 const ItemImage = styled.div<{ imageUrl: string }>`
-  height: 90%;
+  height: 95%;
   width: 100%;
+  grid-column-start: 1;
+  grid-column-end: 6;
+  grid-row-start: 1;
+  grid-row-end: 7;
   background-image: url(${(p) => p.imageUrl});
-  background-size: 75%;
+  background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
+`;
+
+const OutOfStock = styled.span`
+  display: flex;
+  position: relative;
+  top: 50%;
+  justify-content: center;
+  font-size: 20px;
+  z-index: 2;
 `;
 
 const ItemDescription = styled.div`
@@ -29,7 +77,7 @@ const ItemDescription = styled.div`
 `;
 
 const ItemName = styled.span`
-  margin: 25px 0 10px 0;
+  margin: 0 0 10px 0;
   font-size: 18px;
   color: #1d1f22;
 `;
@@ -52,17 +100,27 @@ const ItemIPrice = styled.span`
 
 interface IProps {
   product: IProduct;
+  currentCurrency: string;
 }
 
-const Product = ({ product }: IProps) => {
+const Product = ({ product, currentCurrency }: IProps) => {
+  const selectedCurrencyPrice = product.prices.find(
+    (price) => price.currency.symbol === currentCurrency
+  );
+
   return (
-    <ItemContainer>
-      <ItemImage imageUrl={product.gallery[0]}></ItemImage>
+    <ItemContainer outOfStock={!product.inStock}>
+      <ItemImageContainer>
+        <ItemImage imageUrl={product.gallery[0]}>
+          {!product.inStock && <OutOfStock>OUT OF STOCK</OutOfStock>}
+        </ItemImage>
+        {product.inStock && <ToShoppingCart></ToShoppingCart>}
+      </ItemImageContainer>
       <ItemDescription>
         <ItemName>{product.name}</ItemName>
         <ItemPriceContainer>
-          <Currency>{product.prices[0].currency.symbol}</Currency>
-          <ItemIPrice>{product.prices[0].amount}</ItemIPrice>
+          <Currency>{selectedCurrencyPrice?.currency.symbol}</Currency>
+          <ItemIPrice>{selectedCurrencyPrice?.amount}</ItemIPrice>
         </ItemPriceContainer>
       </ItemDescription>
     </ItemContainer>
