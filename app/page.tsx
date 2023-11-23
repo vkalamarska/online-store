@@ -1,18 +1,36 @@
 "use client";
 
-import StoreExplorer from "@/components/store-explorer";
 import styled from "styled-components";
+import ItemsContainer from "@/components/items-container";
+import { useEffect } from "react";
+import useStoreData from "@/hooks/useStoreData";
+import { useProductStore } from "@/store/zustand";
 
-const AppWrapper = styled.section`
-  width: 100%;
-  min-height: 100%;
+const StoreWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
   background-color: white;
+  color: black;
 `;
 
-export default function Home() {
+const StoreExplorer = () => {
+  const { data, loading, error } = useStoreData();
+  const { initializeStore } = useProductStore();
+
+  useEffect(() => {
+    if (!data?.categories) return;
+
+    initializeStore(data.categories);
+  }, [data]);
+
+  if (loading || !data) return <div>Loading</div>;
+  if (error) return <pre>{error.message}</pre>;
+
   return (
-    <AppWrapper>
-      <StoreExplorer></StoreExplorer>
-    </AppWrapper>
+    <StoreWrapper>
+      <ItemsContainer />
+    </StoreWrapper>
   );
-}
+};
+
+export default StoreExplorer;

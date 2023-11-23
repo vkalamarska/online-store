@@ -1,8 +1,10 @@
+"use client";
+
 import styled from "styled-components";
 import Logo from "../assets/logo.png";
 import ShoppingCart from "../assets/shopping-cart.png";
 import Currency from "./currency-dropdown";
-import { ICategory, ICurrency } from "@/hooks/useStoreData";
+import { useProductStore } from "@/store/zustand";
 
 const HeaderWrapper = styled.section`
   width: 100%;
@@ -61,26 +63,15 @@ const ShoppingCartIcon = styled.button`
   border: none;
 `;
 
-interface IProps {
-  categories: ICategory[];
-  allCurrencies: ICurrency[];
-  currentCurrency: string;
-  handleSelectedCurrency: (curr: ICurrency) => void;
-  handleSelectedCategory: (cat: ICategory) => void;
-}
+const Header = () => {
+  const { categories, currencies, currentCurrency, setCategory, setCurrency } =
+    useProductStore();
 
-const Header = ({
-  categories,
-  allCurrencies,
-  currentCurrency,
-  handleSelectedCurrency,
-  handleSelectedCategory,
-}: IProps) => {
   return (
     <HeaderWrapper>
       <CategoryContainer>
         {categories?.map((c) => (
-          <Category onClick={() => handleSelectedCategory(c)}>
+          <Category onClick={() => setCategory(c.name)}>
             {c.name.toUpperCase()}
           </Category>
         ))}
@@ -88,9 +79,9 @@ const Header = ({
       <LogoButton></LogoButton>
       <ShoppingCartContainer>
         <Currency
-          allCurrencies={allCurrencies}
+          allCurrencies={currencies}
           currentCurrency={currentCurrency}
-          handleSelectedCurrency={handleSelectedCurrency}
+          handleSelectedCurrency={setCurrency}
         ></Currency>
         <ShoppingCartIcon></ShoppingCartIcon>
       </ShoppingCartContainer>

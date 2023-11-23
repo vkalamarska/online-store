@@ -1,6 +1,9 @@
+"use client";
+
 import { IProduct } from "@/hooks/useStoreData";
 import styled from "styled-components";
 import ShoppingCart from "../assets/to-shopping-cart.png";
+import Link from "next/link";
 
 const ToShoppingCart = styled.div`
   height: 55px;
@@ -17,7 +20,7 @@ const ToShoppingCart = styled.div`
   background-position: center;
 `;
 
-const ItemContainer = styled.div<{ outOfStock: boolean }>`
+const ItemContainer = styled(Link)<{ outOfStock: boolean }>`
   height: 460px;
   width: 370px;
   margin: 10px 8px;
@@ -109,7 +112,7 @@ const Product = ({ product, currentCurrency }: IProps) => {
   );
 
   return (
-    <ItemContainer outOfStock={!product.inStock}>
+    <ItemContainer href={`/item/${product.id}`} outOfStock={!product.inStock}>
       <ItemImageContainer>
         <ItemImage imageUrl={product.gallery[0]}>
           {!product.inStock && <OutOfStock>OUT OF STOCK</OutOfStock>}

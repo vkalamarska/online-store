@@ -1,3 +1,5 @@
+"use client";
+
 import { ICurrency } from "@/hooks/useStoreData";
 import styled from "styled-components";
 import { useState } from "react";
@@ -17,6 +19,7 @@ const CurrencyList = styled.ul`
 
 const ListItem = styled.li`
   padding: 10px 15px;
+  color: #1d1f22;
   display: flex;
   justify-content: center;
 
@@ -39,7 +42,7 @@ const CurrencyLabel = styled.div`
 interface IProps {
   allCurrencies: ICurrency[];
   currentCurrency: string;
-  handleSelectedCurrency: (curr: ICurrency) => void;
+  handleSelectedCurrency: (curr: string) => void;
 }
 
 const Currency = ({
@@ -59,7 +62,7 @@ const Currency = ({
           {allCurrencies.map((c) => (
             <ListItem
               onClick={() => {
-                handleSelectedCurrency(c);
+                handleSelectedCurrency(c.symbol);
                 setIsOpen(false);
               }}
             >

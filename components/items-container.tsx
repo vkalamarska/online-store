@@ -1,6 +1,8 @@
+"use client";
+
 import styled from "styled-components";
 import Product from "./product";
-import { ICategory } from "@/hooks/useStoreData";
+import { useProductStore } from "@/store/zustand";
 
 const ItemsWrapper = styled.div`
   display: flex;
@@ -9,19 +11,15 @@ const ItemsWrapper = styled.div`
   padding: 50px;
 `;
 
-interface IProps {
-  categories: ICategory[];
-  currentCurrency: string;
-  currentCategory: string;
-}
+const ItemsContainer = () => {
+  const {
+    categories,
+    currentCategory: currentCategoryName,
+    currentCurrency,
+  } = useProductStore();
 
-const ItemsContainer = ({
-  categories,
-  currentCurrency,
-  currentCategory,
-}: IProps) => {
   const selectedCategory = categories.find(
-    (category) => category.name === currentCategory
+    (category) => category.name === currentCategoryName
   );
 
   return (
