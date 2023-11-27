@@ -25,7 +25,7 @@ const ItemsContainer = () => {
   return (
     <ItemsWrapper>
       {selectedCategory?.products.map((p) => (
-        <Product product={p} currentCurrency={currentCurrency} />
+        <Product key={p.id} product={p} currentCurrency={currentCurrency} />
       ))}
     </ItemsWrapper>
   );

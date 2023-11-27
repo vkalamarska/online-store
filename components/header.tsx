@@ -5,6 +5,7 @@ import Logo from "../assets/logo.png";
 import ShoppingCart from "../assets/shopping-cart.png";
 import Currency from "./currency-dropdown";
 import { useProductStore } from "@/store/zustand";
+import Link from "next/link";
 
 const HeaderWrapper = styled.section`
   width: 100%;
@@ -20,7 +21,7 @@ const CategoryContainer = styled.div`
   display: flex;
 `;
 
-const Category = styled.button`
+const Category = styled(Link)`
   height: 100%;
   margin-right: 25px;
   display: flex;
@@ -71,7 +72,13 @@ const Header = () => {
     <HeaderWrapper>
       <CategoryContainer>
         {categories?.map((c) => (
-          <Category onClick={() => setCategory(c.name)}>
+          <Category
+            key={c.name}
+            href={"/"}
+            onClick={() => {
+              setCategory(c.name);
+            }}
+          >
             {c.name.toUpperCase()}
           </Category>
         ))}

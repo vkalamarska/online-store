@@ -12,6 +12,8 @@ const AppWrapper = styled.section`
   width: 100%;
   min-height: 100%;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 `;
 
 export default function RootLayout({

@@ -5,6 +5,7 @@ import ItemsContainer from "@/components/items-container";
 import { useEffect } from "react";
 import useStoreData from "@/hooks/useStoreData";
 import { useProductStore } from "@/store/zustand";
+import { useParams, useSearchParams } from "next/navigation";
 
 const StoreWrapper = styled.section`
   display: flex;
@@ -15,10 +16,10 @@ const StoreWrapper = styled.section`
 
 const StoreExplorer = () => {
   const { data, loading, error } = useStoreData();
-  const { initializeStore } = useProductStore();
+  const { initializeStore, categories } = useProductStore();
 
   useEffect(() => {
-    if (!data?.categories) return;
+    if (!data?.categories || categories.length) return;
 
     initializeStore(data.categories);
   }, [data]);
