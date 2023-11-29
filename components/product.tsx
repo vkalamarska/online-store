@@ -60,9 +60,10 @@ const ItemImage = styled.div<{ imageUrl: string }>`
   grid-row-start: 1;
   grid-row-end: 7;
   background-image: url(${(p) => p.imageUrl});
-  background-size: 80%;
+  background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
+  background-size: contain;
 `;
 
 const OutOfStock = styled.span`

@@ -8,7 +8,7 @@ const ItemsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 50px;
+  padding: 75px;
 `;
 
 const ItemsContainer = () => {

@@ -10,7 +10,7 @@ import Link from "next/link";
 const HeaderWrapper = styled.section`
   width: 100%;
   height: 60px;
-  padding: 0 50px;
+  padding: 0 75px;
   align-items: center;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
