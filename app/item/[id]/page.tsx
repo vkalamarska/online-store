@@ -18,12 +18,12 @@ const ItemContainer = styled.div`
   margin: 50px 0;
   padding: 0 75px;
   display: flex;
-  justify-content: space-between;
 `;
 
 const ItemImage = styled.div<{ imageUrl: string }>`
   width: 400px;
   height: 400px;
+  margin-right: 90px;
   background-image: url(${(p) => p.imageUrl});
   background-size: 100%;
   background-repeat: no-repeat;
@@ -34,6 +34,7 @@ const ItemImage = styled.div<{ imageUrl: string }>`
 const ImagesContainer = styled.div`
   width: 130px;
   height: 400px;
+  margin-right: 90px;
   overflow: auto;
 `;
 
@@ -49,7 +50,7 @@ const Images = styled.div<{ imagesUrl: string }>`
 `;
 
 const ProductDetailsContainer = styled.div`
-  width: 30%;
+  width: 20%;
   display: flex;
   flex-direction: column;
 `;
@@ -77,20 +78,58 @@ const AttributeContainer = styled.div`
   display: flex;
 `;
 
-const AttributeItems = styled.button<{ backgroundColor: string }>`
+const AttributeItems = styled.button<{
+  isColor: boolean;
+  backgroundColor: string;
+}>`
   height: 30px;
   width: 45px;
   margin-right: 10px;
   border: 1px solid black;
-  background-color: ${(p) => p.backgroundColor || "white"};
+  background-color: ${(p) => (p.isColor ? p.backgroundColor : "white")};
+  cursor: pointer;
+`;
+
+const Price = styled.div`
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const PriceDetailsContainer = styled.div`
+  display: flex;
+`;
+
+const CurrencySymbol = styled.div`
+  margin-right: 5px;
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const Amount = styled.div`
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const ToCartButton = styled.button`
+  height: 30px;
+  width: 100%;
+  margin-bottom: 15px;
+  border: none;
+  background-color: #5ece7b;
+  color: white;
   cursor: pointer;
 `;
 
 export default function ItemPage() {
   const { id: productId } = useParams();
 
-  const { categories, currentCategory: currentCategoryName } =
-    useProductStore();
+  const {
+    categories,
+    currentCategory: currentCategoryName,
+    currentCurrency,
+  } = useProductStore();
 
   const selectedCategory = categories.find(
     (category) => category.name === currentCategoryName
@@ -98,6 +137,10 @@ export default function ItemPage() {
 
   const selectedProduct = selectedCategory?.products.find(
     (product) => product.id === productId
+  );
+
+  const selectedCurrencyPrice = selectedProduct?.prices.find(
+    (price) => price.currency.symbol === currentCurrency
   );
 
   const [currentImage, setCurrentImage] = useState(selectedProduct?.gallery[0]);
@@ -120,16 +163,27 @@ export default function ItemPage() {
           <ProductName>{selectedProduct?.name}</ProductName>
           {selectedProduct?.attributes.map((a) => (
             <Attributes>
-              <AttributeName>{a.name}</AttributeName>
+              <AttributeName>{a.name}:</AttributeName>
               <AttributeContainer>
-                {a.items.map((i) => (
-                  <AttributeItems backgroundColor={i.value}>
-                    {!i.value.includes("#") && i.value}
-                  </AttributeItems>
-                ))}
+                {a.items.map((i) => {
+                  const isColor = i.value.includes("#");
+                  return (
+                    <AttributeItems isColor={isColor} backgroundColor={i.value}>
+                      {!i.value.includes("#") && i.value}
+                    </AttributeItems>
+                  );
+                })}
               </AttributeContainer>
             </Attributes>
           ))}
+          <Price>Price:</Price>
+          <PriceDetailsContainer>
+            <CurrencySymbol>
+              {selectedCurrencyPrice?.currency.symbol}
+            </CurrencySymbol>
+            <Amount>{selectedCurrencyPrice?.amount}</Amount>
+          </PriceDetailsContainer>
+          <ToCartButton></ToCartButton>
         </ProductDetailsContainer>
       </ItemContainer>
     </PageWrapper>

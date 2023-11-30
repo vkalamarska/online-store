@@ -6,6 +6,7 @@ import ShoppingCart from "../assets/shopping-cart.png";
 import Currency from "./currency-dropdown";
 import { useProductStore } from "@/store/zustand";
 import Link from "next/link";
+import { useState } from "react";
 
 const HeaderWrapper = styled.section`
   width: 100%;
@@ -21,24 +22,25 @@ const CategoryContainer = styled.div`
   display: flex;
 `;
 
-const Category = styled(Link)`
+const Category = styled(Link)<{ isCurrentCategory: boolean }>`
   height: 100%;
   margin-right: 25px;
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: black;
+  color: ${(props) => (props.isCurrentCategory ? "#5ece7b" : "black")};
+  border-bottom: ${(props) =>
+    props.isCurrentCategory ? "1px solid #5ece7b" : "none"};
   background-color: transparent;
-  border: none;
   cursor: pointer;
 
   &:hover {
     color: #5ece7b;
-    border-bottom: 1px solid #5ece7b;
+    border-bottom: none;
   }
 `;
 
-const LogoButton = styled.button`
+const LogoButton = styled(Link)`
   background-image: url(${Logo.src});
   padding: 15px;
   background-color: transparent;
@@ -65,25 +67,40 @@ const ShoppingCartIcon = styled.button`
 `;
 
 const Header = () => {
-  const { categories, currencies, currentCurrency, setCategory, setCurrency } =
-    useProductStore();
+  const {
+    categories,
+    currencies,
+    currentCurrency,
+    currentCategory,
+    setCategory,
+    setCurrency,
+  } = useProductStore();
 
   return (
     <HeaderWrapper>
       <CategoryContainer>
-        {categories?.map((c) => (
-          <Category
-            key={c.name}
-            href={"/"}
-            onClick={() => {
-              setCategory(c.name);
-            }}
-          >
-            {c.name.toUpperCase()}
-          </Category>
-        ))}
+        {categories?.map((c) => {
+          const isCurrentCategory = c.name === currentCategory;
+          return (
+            <Category
+              key={c.name}
+              href={"/"}
+              onClick={() => {
+                setCategory(c.name);
+              }}
+              isCurrentCategory={isCurrentCategory}
+            >
+              {c.name.toUpperCase()}
+            </Category>
+          );
+        })}
       </CategoryContainer>
-      <LogoButton></LogoButton>
+      <LogoButton
+        href={"/"}
+        onClick={() => {
+          setCategory("all");
+        }}
+      ></LogoButton>
       <ShoppingCartContainer>
         <Currency
           allCurrencies={currencies}
