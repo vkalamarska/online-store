@@ -56,7 +56,7 @@ const ShoppingCartContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const ShoppingCartIcon = styled.button`
+const ShoppingCartIcon = styled(Link)`
   background-image: url(${ShoppingCart.src});
   padding: 9px;
   background-color: transparent;
@@ -64,6 +64,7 @@ const ShoppingCartIcon = styled.button`
   background-repeat: no-repeat;
   background-position: center;
   border: none;
+  cursor: pointer;
 `;
 
 const Header = () => {
@@ -107,7 +108,7 @@ const Header = () => {
           currentCurrency={currentCurrency}
           handleSelectedCurrency={setCurrency}
         ></Currency>
-        <ShoppingCartIcon></ShoppingCartIcon>
+        <ShoppingCartIcon href={`/cart`}></ShoppingCartIcon>
       </ShoppingCartContainer>
     </HeaderWrapper>
   );

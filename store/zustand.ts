@@ -1,4 +1,4 @@
-import { ICategory, ICurrency } from "@/hooks/useStoreData";
+import { ICategory, ICurrency, IProduct } from "@/hooks/useStoreData";
 import { create } from "zustand";
 
 type ProductStore = {
@@ -35,4 +35,15 @@ export const useProductStore = create<ProductStore>((set) => ({
     }),
   setCategory: (category) => set(() => ({ currentCategory: category })),
   setCurrency: (currency) => set(() => ({ currentCurrency: currency })),
+}));
+
+type CartStore = {
+  cartItems: IProduct[];
+  addProductToCart: (p: IProduct) => void;
+};
+
+export const useCartStore = create<CartStore>((set) => ({
+  cartItems: [],
+  addProductToCart: (product) =>
+    set((store) => ({ cartItems: [...store.cartItems, product] })),
 }));

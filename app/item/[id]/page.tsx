@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useProductStore } from "@/store/zustand";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import ProductDetailsSection from "@/components/product-details-section";
 
 const PageWrapper = styled.section`
   width: 100%;
@@ -35,7 +36,21 @@ const ImagesContainer = styled.div`
   width: 130px;
   height: 400px;
   margin-right: 90px;
-  overflow: auto;
+  padding-right: 15px;
+  overflow-y: auto;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #5ece7cda;
+    border-radius: 10px;
+    border: 0px solid #ffffff;
+  }
 `;
 
 const Images = styled.div<{ imagesUrl: string }>`
@@ -46,79 +61,6 @@ const Images = styled.div<{ imagesUrl: string }>`
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  cursor: pointer;
-`;
-
-const ProductDetailsContainer = styled.div`
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Brand = styled.div`
-  font-size: 22px;
-  font-weight: bold;
-`;
-
-const ProductName = styled.div`
-  margin: 5px 0 30px 0;
-  font-size: 22px;
-`;
-
-const Attributes = styled.div``;
-
-const AttributeName = styled.div`
-  margin-bottom: 4px;
-  font-size: 15px;
-  font-weight: bold;
-`;
-
-const AttributeContainer = styled.div`
-  margin-bottom: 15px;
-  display: flex;
-`;
-
-const AttributeItems = styled.button<{
-  isColor: boolean;
-  backgroundColor: string;
-}>`
-  height: 30px;
-  width: 45px;
-  margin-right: 10px;
-  border: 1px solid black;
-  background-color: ${(p) => (p.isColor ? p.backgroundColor : "white")};
-  cursor: pointer;
-`;
-
-const Price = styled.div`
-  margin-bottom: 4px;
-  font-size: 15px;
-  font-weight: bold;
-`;
-
-const PriceDetailsContainer = styled.div`
-  display: flex;
-`;
-
-const CurrencySymbol = styled.div`
-  margin-right: 5px;
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const Amount = styled.div`
-  margin-bottom: 15px;
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const ToCartButton = styled.button`
-  height: 30px;
-  width: 100%;
-  margin-bottom: 15px;
-  border: none;
-  background-color: #5ece7b;
-  color: white;
   cursor: pointer;
 `;
 
@@ -158,33 +100,10 @@ export default function ItemPage() {
           ))}
         </ImagesContainer>
         <ItemImage imageUrl={currentImage || ""}></ItemImage>
-        <ProductDetailsContainer>
-          <Brand>{selectedProduct?.brand}</Brand>
-          <ProductName>{selectedProduct?.name}</ProductName>
-          {selectedProduct?.attributes.map((a) => (
-            <Attributes>
-              <AttributeName>{a.name}:</AttributeName>
-              <AttributeContainer>
-                {a.items.map((i) => {
-                  const isColor = i.value.includes("#");
-                  return (
-                    <AttributeItems isColor={isColor} backgroundColor={i.value}>
-                      {!i.value.includes("#") && i.value}
-                    </AttributeItems>
-                  );
-                })}
-              </AttributeContainer>
-            </Attributes>
-          ))}
-          <Price>Price:</Price>
-          <PriceDetailsContainer>
-            <CurrencySymbol>
-              {selectedCurrencyPrice?.currency.symbol}
-            </CurrencySymbol>
-            <Amount>{selectedCurrencyPrice?.amount}</Amount>
-          </PriceDetailsContainer>
-          <ToCartButton></ToCartButton>
-        </ProductDetailsContainer>
+        <ProductDetailsSection
+          selectedCurrencyPrice={selectedCurrencyPrice}
+          selectedProduct={selectedProduct}
+        ></ProductDetailsSection>
       </ItemContainer>
     </PageWrapper>
   );

@@ -5,7 +5,6 @@ import ItemsContainer from "@/components/items-container";
 import { useEffect } from "react";
 import useStoreData from "@/hooks/useStoreData";
 import { useProductStore } from "@/store/zustand";
-import { useParams, useSearchParams } from "next/navigation";
 
 const StoreWrapper = styled.section`
   display: flex;

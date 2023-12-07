@@ -4,6 +4,7 @@ import { IProduct } from "@/hooks/useStoreData";
 import styled from "styled-components";
 import ShoppingCart from "../assets/to-shopping-cart.png";
 import Link from "next/link";
+import { useCartStore } from "@/store/zustand";
 
 const ToShoppingCart = styled.div`
   height: 55px;
@@ -60,7 +61,6 @@ const ItemImage = styled.div<{ imageUrl: string }>`
   grid-row-start: 1;
   grid-row-end: 7;
   background-image: url(${(p) => p.imageUrl});
-  background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -112,13 +112,19 @@ const Product = ({ product, currentCurrency }: IProps) => {
     (price) => price.currency.symbol === currentCurrency
   );
 
+  const { addProductToCart } = useCartStore();
+
   return (
     <ItemContainer href={`/item/${product.id}`} outOfStock={!product.inStock}>
       <ItemImageContainer>
         <ItemImage imageUrl={product.gallery[0]}>
           {!product.inStock && <OutOfStock>OUT OF STOCK</OutOfStock>}
         </ItemImage>
-        {product.inStock && <ToShoppingCart></ToShoppingCart>}
+        {product.inStock && (
+          <ToShoppingCart
+            onClick={() => addProductToCart(product)}
+          ></ToShoppingCart>
+        )}
       </ItemImageContainer>
       <ItemDescription>
         <ItemName>{product.name}</ItemName>
