@@ -40,10 +40,12 @@ export const useProductStore = create<ProductStore>((set) => ({
 type CartStore = {
   cartItems: IProduct[];
   addProductToCart: (p: IProduct) => void;
+  removeProductFromCart: (p: IProduct) => void;
 };
 
 export const useCartStore = create<CartStore>((set) => ({
   cartItems: [],
   addProductToCart: (product) =>
     set((store) => ({ cartItems: [...store.cartItems, product] })),
+  removeProductFromCart: (product) => set((store) => ({})),
 }));

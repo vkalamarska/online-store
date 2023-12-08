@@ -26,7 +26,6 @@ const ItemImage = styled.div<{ imageUrl: string }>`
   height: 400px;
   margin-right: 90px;
   background-image: url(${(p) => p.imageUrl});
-  background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

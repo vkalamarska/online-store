@@ -42,7 +42,8 @@ const Category = styled(Link)<{ isCurrentCategory: boolean }>`
 
 const LogoButton = styled(Link)`
   background-image: url(${Logo.src});
-  padding: 15px;
+  padding: 20px;
+  background-size: contain;
   background-color: transparent;
   background-repeat: no-repeat;
   background-position: center;
@@ -60,7 +61,7 @@ const ShoppingCartIcon = styled(Link)`
   background-image: url(${ShoppingCart.src});
   padding: 9px;
   background-color: transparent;
-  background-size: 100%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   border: none;

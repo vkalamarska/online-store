@@ -37,7 +37,7 @@ const AttributeItems = styled.button<{
   backgroundColor: string;
 }>`
   height: 30px;
-  width: 45px;
+  width: ${(p) => (p.isColor ? "30px" : "45px")};
   margin-right: 10px;
   border: 1px solid black;
   background-color: ${(p) => (p.isColor ? p.backgroundColor : "white")};
@@ -73,7 +73,7 @@ const Amount = styled.div`
   font-weight: bold;
 `;
 
-const ToCartButton = styled.button`
+const ToCartButton = styled.button<{ outOfStock: boolean }>`
   height: 40px;
   width: 100%;
   margin-bottom: 25px;
@@ -81,6 +81,13 @@ const ToCartButton = styled.button`
   background-color: #5ece7b;
   color: white;
   cursor: pointer;
+
+  ${(p) =>
+    p.outOfStock &&
+    `
+      filter: grayscale(60%) opacity(60%);
+      cursor: auto;
+    `}
 `;
 
 const Description = styled.div`
@@ -127,7 +134,9 @@ const ProductDetailsSection = ({
         </CurrencySymbol>
         <Amount>{selectedCurrencyPrice?.amount}</Amount>
       </PriceDetailsContainer>
-      <ToCartButton>ADD TO CART</ToCartButton>
+      <ToCartButton outOfStock={!selectedProduct?.inStock}>
+        {selectedProduct?.inStock ? "ADD TO CART" : "OUT OF STOCK"}
+      </ToCartButton>
       <Description>{selectedProduct?.description}</Description>
     </ProductDetailsContainer>
   );

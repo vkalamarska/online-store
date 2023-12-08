@@ -7,16 +7,16 @@ import Link from "next/link";
 import { useCartStore } from "@/store/zustand";
 
 const ToShoppingCart = styled.div`
-  height: 55px;
-  width: 55px;
+  height: 45px;
+  width: 45px;
   visibility: hidden;
   display: flex;
   justify-content: flex-end;
   grid-column: 5/6;
-  grid-row: 6/7;
+  grid-row: 7/8;
   z-index: 3;
   background-image: url(${ShoppingCart.src});
-  background-size: 80%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 `;
@@ -41,7 +41,6 @@ const ItemContainer = styled(Link)<{ outOfStock: boolean }>`
     p.outOfStock &&
     `
       filter: grayscale(90%) opacity(40%);
-      cursor: auto;
     `}
 `;
 
@@ -59,7 +58,7 @@ const ItemImage = styled.div<{ imageUrl: string }>`
   grid-column-start: 1;
   grid-column-end: 6;
   grid-row-start: 1;
-  grid-row-end: 7;
+  grid-row-end: 8;
   background-image: url(${(p) => p.imageUrl});
   background-repeat: no-repeat;
   background-position: center;

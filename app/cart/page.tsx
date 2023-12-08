@@ -7,6 +7,7 @@ import ArrowLeft from "../../assets/arrow-left.png";
 import ArrowRight from "../../assets/arrow-right.png";
 import { useState } from "react";
 import { useCartStore, useProductStore } from "@/store/zustand";
+import ImageNavigation from "@/components/cart-image-navigation";
 
 const PageWrapper = styled.section`
   width: 100%;
@@ -90,7 +91,7 @@ const AttributeItems = styled.button<{
   backgroundColor: string;
 }>`
   height: 30px;
-  width: 45px;
+  width: ${(p) => (p.isColor ? "30px" : "45px")};
   margin-right: 10px;
   border: 1px solid black;
   background-color: ${(p) => (p.isColor ? p.backgroundColor : "white")};
@@ -145,30 +146,10 @@ const MinusButtonContainer = styled.button`
   cursor: pointer;
 `;
 
-const ProductImage = styled.div`
-  height: 100%;
-  width: 140px;
-  border: 1px solid black;
-`;
-
 export default function CartPage() {
-  const [quantity, setQuantity] = useState(0);
-
   const { cartItems } = useCartStore();
 
   const { currentCurrency } = useProductStore();
-
-  const handlePlusClick = () => {
-    if (quantity < 5 && quantity >= 0) {
-      setQuantity(quantity + 1);
-    }
-  };
-
-  const handleMinusClick = () => {
-    if (quantity <= 5 && quantity > 0) {
-      setQuantity(quantity - 1);
-    }
-  };
 
   return (
     <PageWrapper>
@@ -210,15 +191,11 @@ export default function CartPage() {
               </LeftSection>
               <RightSection>
                 <QuantityContainer>
-                  <PlusButtonContainer onClick={() => handlePlusClick()}>
-                    +
-                  </PlusButtonContainer>
-                  <Quantity>{quantity}</Quantity>
-                  <MinusButtonContainer onClick={() => handleMinusClick()}>
-                    -
-                  </MinusButtonContainer>
+                  <PlusButtonContainer>+</PlusButtonContainer>
+                  <Quantity></Quantity>
+                  <MinusButtonContainer>-</MinusButtonContainer>
                 </QuantityContainer>
-                <ProductImage></ProductImage>
+                <ImageNavigation p={p}></ImageNavigation>
               </RightSection>
             </ProductContainer>
           );
