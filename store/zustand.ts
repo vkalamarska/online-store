@@ -37,15 +37,35 @@ export const useProductStore = create<ProductStore>((set) => ({
   setCurrency: (currency) => set(() => ({ currentCurrency: currency })),
 }));
 
+interface ICartItem {
+  productId: string;
+  attributes: {
+    id: string;
+    selectedValue: string | undefined;
+  }[];
+  selectionId: string;
+  quantity: number;
+}
+
 type CartStore = {
-  cartItems: IProduct[];
-  addProductToCart: (p: IProduct) => void;
-  removeProductFromCart: (p: IProduct) => void;
+  cartItems: ICartItem[];
+  quantity: number;
+  addProductToCart: (p: Omit<ICartItem, "selectionId">) => void;
+  updateProductQuantity: (p: ICartItem) => void;
 };
 
 export const useCartStore = create<CartStore>((set) => ({
   cartItems: [],
-  addProductToCart: (product) =>
-    set((store) => ({ cartItems: [...store.cartItems, product] })),
-  removeProductFromCart: (product) => set((store) => ({})),
+  addProductToCart: (item) =>
+    set((store) => {
+      const selectionId = `${item.productId}-${JSON.stringify(
+        attributes.sort((a, b) => a.id > b.id)
+      )}`;
+
+      return { cartItems: [...store.cartItems, { ...item, selectionId }] };
+    }),
+  updateProductQuantity: (product) =>
+    set((store) => {
+      return {};
+    }),
 }));

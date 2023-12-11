@@ -104,6 +104,8 @@ const ProductDetailsSection = ({
 }: IProps) => {
   const [attributes, setAttributes] = useState({ undefined });
 
+  const { addProductWithAttributes } = useCartStore();
+
   return (
     <ProductDetailsContainer>
       <Brand>{selectedProduct?.brand}</Brand>
@@ -134,7 +136,10 @@ const ProductDetailsSection = ({
         </CurrencySymbol>
         <Amount>{selectedCurrencyPrice?.amount}</Amount>
       </PriceDetailsContainer>
-      <ToCartButton outOfStock={!selectedProduct?.inStock}>
+      <ToCartButton
+        outOfStock={!selectedProduct?.inStock}
+        onClick={() => addProductWithAttributes(product)}
+      >
         {selectedProduct?.inStock ? "ADD TO CART" : "OUT OF STOCK"}
       </ToCartButton>
       <Description>{selectedProduct?.description}</Description>

@@ -52,6 +52,7 @@ const RightArrow = styled.button`
 
 const ImageNavigation = ({ p }: IProduct) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const handleClickRight = () => {
     if (currentImageIndex === p?.gallery.length - 1) {
       setCurrentImageIndex(0);
