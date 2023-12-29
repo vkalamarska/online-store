@@ -30,7 +30,7 @@ interface IItem {
   id: string;
 }
 
-interface IPrices {
+export interface IPrices {
   currency: ICurrency;
   amount: number;
 }

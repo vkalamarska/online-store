@@ -1,5 +1,7 @@
 "use client";
 
+import { ICurrency, IPrices, IProduct } from "@/hooks/useStoreData";
+import { useCartStore } from "@/store/zustand";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -94,17 +96,32 @@ const Description = styled.div`
   font-size: 10px;
 `;
 
-interface IAttributesState {
-  [attribute: string]: string;
+interface IAttributeState {
+  [attributeId: string]: string | undefined;
+}
+
+interface IProps {
+  selectedProduct: IProduct;
+  selectedCurrencyPrice: IPrices;
 }
 
 const ProductDetailsSection = ({
   selectedProduct,
   selectedCurrencyPrice,
 }: IProps) => {
-  const [attributes, setAttributes] = useState({ undefined });
+  const initialAttributesState =
+    selectedProduct?.attributes.reduce<IAttributeState>(
+      (state, attr) => ({ ...state, [attr.id]: undefined }),
+      {}
+    ) || {};
 
-  const { addProductWithAttributes } = useCartStore();
+  const [attributes, setAttributes] = useState<IAttributeState>(
+    initialAttributesState
+  );
+
+  const allAttributesSelected = Object.values(attributes).every(Boolean);
+
+  const { cartItems, addProductToCart } = useCartStore();
 
   return (
     <ProductDetailsContainer>
@@ -120,7 +137,9 @@ const ProductDetailsSection = ({
                 <AttributeItems
                   isColor={isColor}
                   backgroundColor={i.value}
-                  onClick={() => setAttributes(i.value)}
+                  onClick={() =>
+                    setAttributes((prev) => ({ ...prev, [a.id]: i.value }))
+                  }
                 >
                   {!i.value.includes("#") && i.value}
                 </AttributeItems>
@@ -137,8 +156,14 @@ const ProductDetailsSection = ({
         <Amount>{selectedCurrencyPrice?.amount}</Amount>
       </PriceDetailsContainer>
       <ToCartButton
-        outOfStock={!selectedProduct?.inStock}
-        onClick={() => addProductWithAttributes(product)}
+        outOfStock={!allAttributesSelected || !selectedProduct?.inStock}
+        onClick={() =>
+          addProductToCart({
+            productId: selectedProduct?.id,
+            quantity: 1,
+            attributes,
+          })
+        }
       >
         {selectedProduct?.inStock ? "ADD TO CART" : "OUT OF STOCK"}
       </ToCartButton>

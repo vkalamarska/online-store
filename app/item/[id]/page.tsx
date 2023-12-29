@@ -100,8 +100,8 @@ export default function ItemPage() {
         </ImagesContainer>
         <ItemImage imageUrl={currentImage || ""}></ItemImage>
         <ProductDetailsSection
-          selectedCurrencyPrice={selectedCurrencyPrice}
-          selectedProduct={selectedProduct}
+          selectedCurrencyPrice={selectedCurrencyPrice!}
+          selectedProduct={selectedProduct!}
         ></ProductDetailsSection>
       </ItemContainer>
     </PageWrapper>

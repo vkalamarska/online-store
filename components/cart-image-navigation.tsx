@@ -50,11 +50,15 @@ const RightArrow = styled.button`
   cursor: pointer;
 `;
 
-const ImageNavigation = ({ p }: IProduct) => {
+interface IProps {
+  product: IProduct;
+}
+
+const ImageNavigation = ({ product }: IProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleClickRight = () => {
-    if (currentImageIndex === p?.gallery.length - 1) {
+    if (currentImageIndex === product?.gallery.length - 1) {
       setCurrentImageIndex(0);
     } else {
       setCurrentImageIndex((prev) => prev + 1);
@@ -63,14 +67,14 @@ const ImageNavigation = ({ p }: IProduct) => {
 
   const handleClickLeft = () => {
     if (currentImageIndex === 0) {
-      setCurrentImageIndex(p?.gallery.length - 1);
+      setCurrentImageIndex(product?.gallery.length - 1);
     } else {
       setCurrentImageIndex((prev) => prev - 1);
     }
   };
 
   return (
-    <ProductImage imageUrl={p?.gallery[currentImageIndex]}>
+    <ProductImage imageUrl={product?.gallery[currentImageIndex]}>
       <Navigaton>
         <LeftArrow onClick={() => handleClickLeft()}></LeftArrow>
         <RightArrow onClick={() => handleClickRight()}></RightArrow>

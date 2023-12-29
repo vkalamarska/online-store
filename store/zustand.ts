@@ -4,6 +4,7 @@ import { create } from "zustand";
 type ProductStore = {
   categories: ICategory[];
   currencies: ICurrency[];
+  products: IProduct[];
   currentCurrency: string;
   currentCategory: string;
   initializeStore: (allCategories: ICategory[]) => void;
@@ -14,6 +15,7 @@ type ProductStore = {
 export const useProductStore = create<ProductStore>((set) => ({
   categories: [],
   currencies: [],
+  products: [],
   currentCurrency: "",
   currentCategory: "",
   initializeStore: (allCategories) =>
@@ -26,9 +28,12 @@ export const useProductStore = create<ProductStore>((set) => ({
         allCategories[0].products[0].prices[0].currency.symbol;
       const initialCategory = allCategories[0].name;
 
+      const allProducts = allCategories.flatMap((cat) => cat.products);
+
       return {
         categories: allCategories,
         currencies: allCurrencies,
+        products: allProducts,
         currentCurrency: initialCurrency,
         currentCategory: initialCategory,
       };
@@ -40,18 +45,16 @@ export const useProductStore = create<ProductStore>((set) => ({
 interface ICartItem {
   productId: string;
   attributes: {
-    id: string;
-    selectedValue: string | undefined;
-  }[];
+    [id: string]: string | undefined;
+  };
   selectionId: string;
   quantity: number;
 }
 
 type CartStore = {
   cartItems: ICartItem[];
-  quantity: number;
   addProductToCart: (p: Omit<ICartItem, "selectionId">) => void;
-  updateProductQuantity: (p: ICartItem) => void;
+  updateProductQuantity: (p: ICartItem, type: "increase" | "decrease") => void;
 };
 
 export const useCartStore = create<CartStore>((set) => ({
@@ -59,13 +62,66 @@ export const useCartStore = create<CartStore>((set) => ({
   addProductToCart: (item) =>
     set((store) => {
       const selectionId = `${item.productId}-${JSON.stringify(
-        attributes.sort((a, b) => a.id > b.id)
+        Object.entries(item.attributes).sort((a, b) => a[0].localeCompare(b[0]))
       )}`;
 
-      return { cartItems: [...store.cartItems, { ...item, selectionId }] };
+      const itemMatchInCart = store.cartItems.find(
+        (item) => item.selectionId === selectionId
+      );
+
+      if (itemMatchInCart) {
+        const cartWithoutItem = store.cartItems.filter(
+          (item) => item.selectionId !== selectionId
+        );
+
+        return {
+          cartItems: [
+            ...cartWithoutItem,
+            { ...itemMatchInCart, quantity: itemMatchInCart.quantity + 1 },
+          ],
+        };
+      }
+
+      return {
+        cartItems: [...store.cartItems, { ...item, selectionId }],
+      };
     }),
-  updateProductQuantity: (product) =>
+  updateProductQuantity: (item, type) =>
     set((store) => {
-      return {};
+      const selectionId = `${item.productId}-${JSON.stringify(
+        Object.entries(item.attributes).sort((a, b) => a[0].localeCompare(b[0]))
+      )}`;
+
+      const itemMatchInCart = store.cartItems.find(
+        (item) => item.selectionId === selectionId
+      )!;
+
+      const cartWithoutItem = store.cartItems.filter(
+        (item) => item.selectionId !== selectionId
+      );
+
+      if (type === "increase") {
+        return {
+          cartItems: [
+            ...cartWithoutItem,
+            { ...itemMatchInCart, quantity: itemMatchInCart.quantity + 1 },
+          ],
+        };
+      }
+
+      const newQuantity = itemMatchInCart.quantity - 1;
+
+      if (newQuantity <= 0) {
+        return {
+          cartItems: cartWithoutItem,
+        };
+      }
+
+      return {
+        cartItems: [
+          ...cartWithoutItem,
+          { ...itemMatchInCart, quantity: newQuantity },
+        ],
+      };
     }),
 }));

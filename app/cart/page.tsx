@@ -147,59 +147,75 @@ const MinusButtonContainer = styled.button`
 `;
 
 export default function CartPage() {
-  const { cartItems } = useCartStore();
+  const { cartItems, updateProductQuantity } = useCartStore();
 
-  const { currentCurrency } = useProductStore();
+  const { currentCurrency, products } = useProductStore();
 
   return (
     <PageWrapper>
       <ItemsSection>
         <Cart>CART</Cart>
-        {cartItems?.map((p) => {
-          const selectedCurrencyPrice = p.prices.find(
-            (price) => price.currency.symbol === currentCurrency
-          );
-          return (
-            <ProductContainer>
-              <LeftSection>
-                <Brand>{p.brand}</Brand>
-                <ProductName>{p.name}</ProductName>
-                <PriceDetailsContainer>
-                  <CurrencySymbol>
-                    {selectedCurrencyPrice?.currency.symbol}
-                  </CurrencySymbol>
-                  <Amount>{selectedCurrencyPrice?.amount}</Amount>
-                </PriceDetailsContainer>
-                {p?.attributes.map((a) => (
-                  <Attributes>
-                    <AttributeName>{a.name}:</AttributeName>
-                    <AttributeContainer>
-                      {a.items.map((i) => {
-                        const isColor = i.value.includes("#");
-                        return (
-                          <AttributeItems
-                            isColor={isColor}
-                            backgroundColor={i.value}
-                          >
-                            {!i.value.includes("#") && i.value}
-                          </AttributeItems>
-                        );
-                      })}
-                    </AttributeContainer>
-                  </Attributes>
-                ))}
-              </LeftSection>
-              <RightSection>
-                <QuantityContainer>
-                  <PlusButtonContainer>+</PlusButtonContainer>
-                  <Quantity></Quantity>
-                  <MinusButtonContainer>-</MinusButtonContainer>
-                </QuantityContainer>
-                <ImageNavigation p={p}></ImageNavigation>
-              </RightSection>
-            </ProductContainer>
-          );
-        })}
+        {cartItems
+          ?.sort((a, b) => a.productId.localeCompare(b.productId))
+          .map((item) => {
+            const product = products.find(
+              (product) => item.productId === product.id
+            );
+
+            if (!product) return null;
+
+            const selectedCurrencyPrice = product.prices.find(
+              (price) => price.currency.symbol === currentCurrency
+            );
+            return (
+              <ProductContainer>
+                <LeftSection>
+                  <Brand>{product.brand}</Brand>
+                  <ProductName>{product.name}</ProductName>
+                  <PriceDetailsContainer>
+                    <CurrencySymbol>
+                      {selectedCurrencyPrice?.currency.symbol}
+                    </CurrencySymbol>
+                    <Amount>{selectedCurrencyPrice?.amount}</Amount>
+                  </PriceDetailsContainer>
+                  {product?.attributes.map((a) => (
+                    <Attributes>
+                      <AttributeName>{a.name}:</AttributeName>
+                      <AttributeContainer>
+                        {a.items.map((i) => {
+                          const isColor = i.value.includes("#");
+                          return (
+                            <AttributeItems
+                              isColor={isColor}
+                              backgroundColor={i.value}
+                            >
+                              {!i.value.includes("#") && i.value}
+                            </AttributeItems>
+                          );
+                        })}
+                      </AttributeContainer>
+                    </Attributes>
+                  ))}
+                </LeftSection>
+                <RightSection>
+                  <QuantityContainer>
+                    <PlusButtonContainer
+                      onClick={() => updateProductQuantity(item, "increase")}
+                    >
+                      +
+                    </PlusButtonContainer>
+                    <Quantity>{item.quantity}</Quantity>
+                    <MinusButtonContainer
+                      onClick={() => updateProductQuantity(item, "decrease")}
+                    >
+                      -
+                    </MinusButtonContainer>
+                  </QuantityContainer>
+                  <ImageNavigation product={product}></ImageNavigation>
+                </RightSection>
+              </ProductContainer>
+            );
+          })}
       </ItemsSection>
     </PageWrapper>
   );
