@@ -1,7 +1,8 @@
 "use client";
 
-import { ICurrency, IPrices, IProduct } from "@/hooks/useStoreData";
+import { IPrices, IProduct } from "@/hooks/useStoreData";
 import { useCartStore } from "@/store/zustand";
+import getDefaultAttrs, { IAttributeState } from "@/utils/get-default-attrs";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -37,19 +38,41 @@ const AttributeContainer = styled.div`
 const AttributeItems = styled.button<{
   isColor: boolean;
   backgroundColor: string;
+  isSelected: boolean;
 }>`
   height: 30px;
   width: ${(p) => (p.isColor ? "30px" : "45px")};
   margin-right: 10px;
   border: 1px solid black;
-  background-color: ${(p) => (p.isColor ? p.backgroundColor : "white")};
+  background-color: white;
   cursor: pointer;
+
+  ${(p) =>
+    p.isColor &&
+    `
+       background-color: ${p.backgroundColor};
+    `}
+
+  ${(p) =>
+    p.isSelected &&
+    !p.isColor &&
+    `
+       background-color: black;
+       color:white;
+    `}
+
+  ${(p) =>
+    p.isSelected &&
+    p.isColor &&
+    `
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+    `}
 
   &:hover {
     background-color: ${(p) => (p.isColor ? p.backgroundColor : "black")};
     color: white;
     box-shadow: ${(p) =>
-      p.isColor ? "0px 0px 2px 0px rgba(0,0,0,0.75)" : "none"};
+      p.isColor ? "0px 0px 3px 0px rgba(0,0,0,0.75)" : "none"};
   }
 `;
 
@@ -96,10 +119,6 @@ const Description = styled.div`
   font-size: 10px;
 `;
 
-interface IAttributeState {
-  [attributeId: string]: string | undefined;
-}
-
 interface IProps {
   selectedProduct: IProduct;
   selectedCurrencyPrice: IPrices;
@@ -109,19 +128,13 @@ const ProductDetailsSection = ({
   selectedProduct,
   selectedCurrencyPrice,
 }: IProps) => {
-  const initialAttributesState =
-    selectedProduct?.attributes.reduce<IAttributeState>(
-      (state, attr) => ({ ...state, [attr.id]: undefined }),
-      {}
-    ) || {};
-
   const [attributes, setAttributes] = useState<IAttributeState>(
-    initialAttributesState
+    getDefaultAttrs(selectedProduct)
   );
 
   const allAttributesSelected = Object.values(attributes).every(Boolean);
 
-  const { cartItems, addProductToCart } = useCartStore();
+  const { addProductToCart } = useCartStore();
 
   return (
     <ProductDetailsContainer>
@@ -137,6 +150,7 @@ const ProductDetailsSection = ({
                 <AttributeItems
                   isColor={isColor}
                   backgroundColor={i.value}
+                  isSelected={attributes[a.id] === i.value}
                   onClick={() =>
                     setAttributes((prev) => ({ ...prev, [a.id]: i.value }))
                   }

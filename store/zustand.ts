@@ -88,28 +88,20 @@ export const useCartStore = create<CartStore>((set) => ({
     }),
   updateProductQuantity: (item, type) =>
     set((store) => {
-      const selectionId = `${item.productId}-${JSON.stringify(
-        Object.entries(item.attributes).sort((a, b) => a[0].localeCompare(b[0]))
-      )}`;
-
-      const itemMatchInCart = store.cartItems.find(
-        (item) => item.selectionId === selectionId
-      )!;
-
       const cartWithoutItem = store.cartItems.filter(
-        (item) => item.selectionId !== selectionId
+        (cartItem) => cartItem.selectionId !== item.selectionId
       );
 
       if (type === "increase") {
         return {
           cartItems: [
             ...cartWithoutItem,
-            { ...itemMatchInCart, quantity: itemMatchInCart.quantity + 1 },
+            { ...item, quantity: item.quantity + 1 },
           ],
         };
       }
 
-      const newQuantity = itemMatchInCart.quantity - 1;
+      const newQuantity = item.quantity - 1;
 
       if (newQuantity <= 0) {
         return {
@@ -118,10 +110,7 @@ export const useCartStore = create<CartStore>((set) => ({
       }
 
       return {
-        cartItems: [
-          ...cartWithoutItem,
-          { ...itemMatchInCart, quantity: newQuantity },
-        ],
+        cartItems: [...cartWithoutItem, { ...item, quantity: newQuantity }],
       };
     }),
 }));

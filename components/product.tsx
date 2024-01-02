@@ -5,6 +5,7 @@ import styled from "styled-components";
 import ShoppingCart from "../assets/to-shopping-cart.png";
 import Link from "next/link";
 import { useCartStore } from "@/store/zustand";
+import getDefaultAttrs from "@/utils/get-default-attrs";
 
 const ToShoppingCart = styled.div`
   height: 45px;
@@ -121,7 +122,13 @@ const Product = ({ product, currentCurrency }: IProps) => {
         </ItemImage>
         {product.inStock && (
           <ToShoppingCart
-            onClick={() => addProductToCart(product)}
+            onClick={() =>
+              addProductToCart({
+                productId: product.id,
+                attributes: getDefaultAttrs(product),
+                quantity: 1,
+              })
+            }
           ></ToShoppingCart>
         )}
       </ItemImageContainer>

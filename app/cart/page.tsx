@@ -1,11 +1,6 @@
 "use client";
 
 import styled from "styled-components";
-import PlusButton from "../../assets/plus-button.png";
-import MinusButton from "../../assets/minus-button.png";
-import ArrowLeft from "../../assets/arrow-left.png";
-import ArrowRight from "../../assets/arrow-right.png";
-import { useState } from "react";
 import { useCartStore, useProductStore } from "@/store/zustand";
 import ImageNavigation from "@/components/cart-image-navigation";
 
@@ -19,14 +14,14 @@ const PageWrapper = styled.section`
 
 const ItemsSection = styled.div`
   width: 100%;
-  margin: 40px 0;
+  margin: 40px 0 70px 0;
   padding: 0 75px;
   display: flex;
   flex-direction: column;
 `;
 
 const Cart = styled.div`
-  padding-bottom: 40px;
+  padding-bottom: 30px;
   font-size: 25px;
   font-weight: 600;
   border-bottom: 1px solid #e5e5e5;
@@ -89,20 +84,34 @@ const AttributeContainer = styled.div`
 const AttributeItems = styled.button<{
   isColor: boolean;
   backgroundColor: string;
+  isSelected: boolean;
 }>`
   height: 30px;
   width: ${(p) => (p.isColor ? "30px" : "45px")};
   margin-right: 10px;
   border: 1px solid black;
-  background-color: ${(p) => (p.isColor ? p.backgroundColor : "white")};
-  cursor: pointer;
+  background-color: white;
 
-  &:hover {
-    background-color: ${(p) => (p.isColor ? p.backgroundColor : "black")};
-    color: white;
-    box-shadow: ${(p) =>
-      p.isColor ? "0px 0px 2px 0px rgba(0,0,0,0.75)" : "none"};
-  }
+  ${(p) =>
+    p.isColor &&
+    `
+       background-color: ${p.backgroundColor};
+    `}
+
+  ${(p) =>
+    p.isSelected &&
+    !p.isColor &&
+    `
+       background-color: black;
+       color:white;
+    `}
+
+  ${(p) =>
+    p.isSelected &&
+    p.isColor &&
+    `
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+    `}
 `;
 
 const RightSection = styled.div`
@@ -146,10 +155,102 @@ const MinusButtonContainer = styled.button`
   cursor: pointer;
 `;
 
+const TaxWrapper = styled.div`
+  margin: 25px 0 5px 0;
+  display: flex;
+`;
+
+const Tax = styled.span`
+  margin-right: 3px;
+  font-size: 15px;
+`;
+
+const TaxContainer = styled.div`
+  display: flex;
+`;
+
+const TaxCurrencySymbol = styled.span`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const TaxAmount = styled.span`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const FinalQuantityWrapper = styled.div`
+  margin-bottom: 5px;
+  display: flex;
+`;
+
+const FinalQuantity = styled.span`
+  margin-right: 3px;
+  font-size: 15px;
+`;
+
+const FinalQuantityAmount = styled.span`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const TotalAmountWrapper = styled.div`
+  margin-bottom: 5px;
+  display: flex;
+`;
+
+const TotalAmount = styled.span`
+  margin-right: 3px;
+  font-size: 15px;
+`;
+
+const TotalAmountContainer = styled.div`
+  display: flex;
+`;
+
+const TotalCurrencySymbol = styled.span`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const TotalAmountValue = styled.span`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+const Order = styled.div`
+  height: 40px;
+  width: 220px;
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background-color: #5ece7b;
+  color: white;
+  cursor: pointer;
+`;
+
 export default function CartPage() {
   const { cartItems, updateProductQuantity } = useCartStore();
 
   const { currentCurrency, products } = useProductStore();
+
+  const totalValue = cartItems.reduce((sum, item) => {
+    const itemMatch = products.find(
+      (product) => product.id === item.productId
+    )!;
+
+    const productCost = itemMatch.prices.find(
+      (price) => price.currency.symbol === currentCurrency
+    )!;
+
+    return productCost.amount * item.quantity + sum;
+  }, 0);
+
+  const totalQuantity = cartItems.reduce((sum, item) => {
+    return item.quantity + sum;
+  }, 0);
 
   return (
     <PageWrapper>
@@ -176,7 +277,11 @@ export default function CartPage() {
                     <CurrencySymbol>
                       {selectedCurrencyPrice?.currency.symbol}
                     </CurrencySymbol>
-                    <Amount>{selectedCurrencyPrice?.amount}</Amount>
+                    <Amount>
+                      {selectedCurrencyPrice
+                        ? selectedCurrencyPrice.amount * item.quantity
+                        : null}
+                    </Amount>
                   </PriceDetailsContainer>
                   {product?.attributes.map((a) => (
                     <Attributes>
@@ -184,10 +289,12 @@ export default function CartPage() {
                       <AttributeContainer>
                         {a.items.map((i) => {
                           const isColor = i.value.includes("#");
+
                           return (
                             <AttributeItems
                               isColor={isColor}
                               backgroundColor={i.value}
+                              isSelected={item.attributes[a.id] === i.value}
                             >
                               {!i.value.includes("#") && i.value}
                             </AttributeItems>
@@ -216,6 +323,25 @@ export default function CartPage() {
               </ProductContainer>
             );
           })}
+        <TaxWrapper>
+          <Tax>Tax 21%:</Tax>
+          <TaxContainer>
+            <TaxCurrencySymbol>{currentCurrency}</TaxCurrencySymbol>
+            <TaxAmount>{totalValue * 0.21}</TaxAmount>
+          </TaxContainer>
+        </TaxWrapper>
+        <FinalQuantityWrapper>
+          <FinalQuantity>Quantity:</FinalQuantity>
+          <FinalQuantityAmount>{totalQuantity}</FinalQuantityAmount>
+        </FinalQuantityWrapper>
+        <TotalAmountWrapper>
+          <TotalAmount>TotalAmount:</TotalAmount>
+          <TotalAmountContainer>
+            <TotalCurrencySymbol>{currentCurrency}</TotalCurrencySymbol>
+            <TotalAmountValue>{totalValue}</TotalAmountValue>
+          </TotalAmountContainer>
+        </TotalAmountWrapper>
+        <Order>Order</Order>
       </ItemsSection>
     </PageWrapper>
   );
