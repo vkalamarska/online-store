@@ -3,6 +3,9 @@
 import styled from "styled-components";
 import { useCartStore, useProductStore } from "@/store/zustand";
 import ImageNavigation from "@/components/cart-image-navigation";
+import { useState } from "react";
+import { iterateObserversSafely } from "@apollo/client/utilities";
+import Link from "next/link";
 
 const PageWrapper = styled.section`
   width: 100%;
@@ -231,6 +234,31 @@ const Order = styled.div`
   cursor: pointer;
 `;
 
+const CartIsEmptyContainer = styled.div`
+  margin: 45px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const CartIsEmpty = styled.div`
+  font-size: 25px;
+`;
+
+const GoHomeButton = styled(Link)`
+  height: 40px;
+  width: 220px;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background-color: #5ece7b;
+  color: white;
+  cursor: pointer;
+`;
+
 export default function CartPage() {
   const { cartItems, updateProductQuantity } = useCartStore();
 
@@ -251,6 +279,8 @@ export default function CartPage() {
   const totalQuantity = cartItems.reduce((sum, item) => {
     return item.quantity + sum;
   }, 0);
+
+  const isEmpty = totalQuantity === 0;
 
   return (
     <PageWrapper>
@@ -323,25 +353,35 @@ export default function CartPage() {
               </ProductContainer>
             );
           })}
-        <TaxWrapper>
-          <Tax>Tax 21%:</Tax>
-          <TaxContainer>
-            <TaxCurrencySymbol>{currentCurrency}</TaxCurrencySymbol>
-            <TaxAmount>{totalValue * 0.21}</TaxAmount>
-          </TaxContainer>
-        </TaxWrapper>
-        <FinalQuantityWrapper>
-          <FinalQuantity>Quantity:</FinalQuantity>
-          <FinalQuantityAmount>{totalQuantity}</FinalQuantityAmount>
-        </FinalQuantityWrapper>
-        <TotalAmountWrapper>
-          <TotalAmount>TotalAmount:</TotalAmount>
-          <TotalAmountContainer>
-            <TotalCurrencySymbol>{currentCurrency}</TotalCurrencySymbol>
-            <TotalAmountValue>{totalValue}</TotalAmountValue>
-          </TotalAmountContainer>
-        </TotalAmountWrapper>
-        <Order>Order</Order>
+        {!isEmpty && (
+          <>
+            <TaxWrapper>
+              <Tax>Tax 21%:</Tax>
+              <TaxContainer>
+                <TaxCurrencySymbol>{currentCurrency}</TaxCurrencySymbol>
+                <TaxAmount>{totalValue * 0.21}</TaxAmount>
+              </TaxContainer>
+            </TaxWrapper>
+            <FinalQuantityWrapper>
+              <FinalQuantity>Quantity:</FinalQuantity>
+              <FinalQuantityAmount>{totalQuantity}</FinalQuantityAmount>
+            </FinalQuantityWrapper>
+            <TotalAmountWrapper>
+              <TotalAmount>TotalAmount:</TotalAmount>
+              <TotalAmountContainer>
+                <TotalCurrencySymbol>{currentCurrency}</TotalCurrencySymbol>
+                <TotalAmountValue>{totalValue}</TotalAmountValue>
+              </TotalAmountContainer>
+            </TotalAmountWrapper>
+            <Order>Order</Order>
+          </>
+        )}
+        {isEmpty && (
+          <CartIsEmptyContainer>
+            <CartIsEmpty>Your cart is empty</CartIsEmpty>
+            <GoHomeButton href={"/"}>Go home</GoHomeButton>
+          </CartIsEmptyContainer>
+        )}
       </ItemsSection>
     </PageWrapper>
   );

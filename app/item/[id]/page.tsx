@@ -24,7 +24,7 @@ const ItemContainer = styled.div`
 const ItemImage = styled.div<{ imageUrl: string }>`
   width: 400px;
   height: 400px;
-  margin-right: 90px;
+  margin-right: 120px;
   background-image: url(${(p) => p.imageUrl});
   background-repeat: no-repeat;
   background-position: center;
@@ -34,7 +34,7 @@ const ItemImage = styled.div<{ imageUrl: string }>`
 const ImagesContainer = styled.div`
   width: 130px;
   height: 400px;
-  margin-right: 90px;
+  margin-right: 120px;
   padding-right: 15px;
   overflow-y: auto;
   position: relative;
@@ -53,7 +53,7 @@ const ImagesContainer = styled.div`
 `;
 
 const Images = styled.div<{ imagesUrl: string }>`
-  margin: 10px 0;
+  margin: 5px 0;
   height: 130px;
   background-size: 100%;
   background-image: url(${(p) => p.imagesUrl});

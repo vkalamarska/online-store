@@ -4,9 +4,8 @@ import styled from "styled-components";
 import Logo from "../assets/logo.png";
 import ShoppingCart from "../assets/shopping-cart.png";
 import Currency from "./currency-dropdown";
-import { useProductStore } from "@/store/zustand";
+import { useCartStore, useProductStore } from "@/store/zustand";
 import Link from "next/link";
-import { useState } from "react";
 
 const HeaderWrapper = styled.section`
   width: 100%;
@@ -51,15 +50,36 @@ const LogoButton = styled(Link)`
   cursor: pointer;
 `;
 
-const ShoppingCartContainer = styled.div`
+const ShoppingCartWrapper = styled.div`
   display: flex;
   grid-column: 3/4;
   justify-content: flex-end;
 `;
 
+const ShoppingCartContainer = styled.div`
+  width: 25px;
+  position: relative;
+`;
+
+const QuantityContainer = styled.div`
+  height: 14px;
+  width: 14px;
+  top: 0px;
+  right: 0px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  font-size: 10px;
+  border-radius: 50%;
+  z-index: 2;
+`;
+
 const ShoppingCartIcon = styled(Link)`
-  background-image: url(${ShoppingCart.src});
   padding: 9px;
+  background-image: url(${ShoppingCart.src});
   background-color: transparent;
   background-size: contain;
   background-repeat: no-repeat;
@@ -77,6 +97,12 @@ const Header = () => {
     setCategory,
     setCurrency,
   } = useProductStore();
+
+  const { cartItems } = useCartStore();
+
+  const totalQuantity = cartItems.reduce((sum, item) => {
+    return item.quantity + sum;
+  }, 0);
 
   return (
     <HeaderWrapper>
@@ -103,14 +129,19 @@ const Header = () => {
           setCategory("all");
         }}
       ></LogoButton>
-      <ShoppingCartContainer>
+      <ShoppingCartWrapper>
         <Currency
           allCurrencies={currencies}
           currentCurrency={currentCurrency}
           handleSelectedCurrency={setCurrency}
         ></Currency>
-        <ShoppingCartIcon href={`/cart`}></ShoppingCartIcon>
-      </ShoppingCartContainer>
+        <ShoppingCartContainer>
+          {totalQuantity > 0 && (
+            <QuantityContainer>{totalQuantity}</QuantityContainer>
+          )}
+          <ShoppingCartIcon href={`/cart`}></ShoppingCartIcon>
+        </ShoppingCartContainer>
+      </ShoppingCartWrapper>
     </HeaderWrapper>
   );
 };

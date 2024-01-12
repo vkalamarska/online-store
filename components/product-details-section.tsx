@@ -181,7 +181,9 @@ const ProductDetailsSection = ({
       >
         {selectedProduct?.inStock ? "ADD TO CART" : "OUT OF STOCK"}
       </ToCartButton>
-      <Description>{selectedProduct?.description}</Description>
+      <Description
+        dangerouslySetInnerHTML={{ __html: selectedProduct?.description || "" }}
+      ></Description>
     </ProductDetailsContainer>
   );
 };
