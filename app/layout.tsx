@@ -5,6 +5,8 @@ import "./globals.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import Header from "@/components/header";
 import styled from "styled-components";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +34,7 @@ export default function RootLayout({
           <AppWrapper>
             <Header />
             {children}
+            <ToastContainer hideProgressBar={true} autoClose={2500} />
           </AppWrapper>
         </ApolloProvider>
       </body>

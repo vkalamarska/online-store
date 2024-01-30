@@ -15,7 +15,8 @@
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-modal": "^3.16.1",
+    "react-loader-spinner": "^6.1.6",
+    "react-toastify": "^10.0.4",
     "styled-components": "^6.1.0",
     "zustand": "^4.4.6"
   },

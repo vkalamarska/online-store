@@ -5,6 +5,7 @@ import { useCartStore } from "@/store/zustand";
 import getDefaultAttrs, { IAttributeState } from "@/utils/get-default-attrs";
 import { useState } from "react";
 import styled from "styled-components";
+import { toast } from "react-toastify";
 
 const ProductDetailsContainer = styled.div`
   width: 20%;
@@ -140,22 +141,23 @@ const ProductDetailsSection = ({
     <ProductDetailsContainer>
       <Brand>{selectedProduct?.brand}</Brand>
       <ProductName>{selectedProduct?.name}</ProductName>
-      {selectedProduct?.attributes.map((a) => (
-        <Attributes>
+      {selectedProduct?.attributes.map((a, i) => (
+        <Attributes key={`${a.id}-${i}`}>
           <AttributeName>{a.name}:</AttributeName>
           <AttributeContainer>
-            {a.items.map((i) => {
-              const isColor = i.value.includes("#");
+            {a.items.map((item, index) => {
+              const isColor = item.value.includes("#");
               return (
                 <AttributeItems
+                  key={`${item.id}-${index}`}
                   isColor={isColor}
-                  backgroundColor={i.value}
-                  isSelected={attributes[a.id] === i.value}
+                  backgroundColor={item.value}
+                  isSelected={attributes[a.id] === item.value}
                   onClick={() =>
-                    setAttributes((prev) => ({ ...prev, [a.id]: i.value }))
+                    setAttributes((prev) => ({ ...prev, [a.id]: item.value }))
                   }
                 >
-                  {!i.value.includes("#") && i.value}
+                  {!item.value.includes("#") && item.value}
                 </AttributeItems>
               );
             })}
@@ -171,13 +173,14 @@ const ProductDetailsSection = ({
       </PriceDetailsContainer>
       <ToCartButton
         outOfStock={!allAttributesSelected || !selectedProduct?.inStock}
-        onClick={() =>
+        onClick={() => {
           addProductToCart({
             productId: selectedProduct?.id,
             quantity: 1,
             attributes,
-          })
-        }
+          });
+          toast("Added to the cart");
+        }}
       >
         {selectedProduct?.inStock ? "ADD TO CART" : "OUT OF STOCK"}
       </ToCartButton>

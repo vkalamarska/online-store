@@ -14,18 +14,6 @@ const StoreWrapper = styled.section`
 `;
 
 const StoreExplorer = () => {
-  const { data, loading, error } = useStoreData();
-  const { initializeStore, categories } = useProductStore();
-
-  useEffect(() => {
-    if (!data?.categories || categories.length) return;
-
-    initializeStore(data.categories);
-  }, [data]);
-
-  if (loading || !data) return <div>Loading</div>;
-  if (error) return <pre>{error.message}</pre>;
-
   return (
     <StoreWrapper>
       <ItemsContainer />
