@@ -1,13 +1,10 @@
 "use client";
 
-import styled from "styled-components";
 import { TailSpin } from "react-loader-spinner";
-
-const LoadingPageWrapper = styled.div``;
 
 const LoadingPage = () => {
   return (
-    <LoadingPageWrapper>
+    <div>
       <TailSpin
         color="#5ece7b"
         width="80"
@@ -19,7 +16,7 @@ const LoadingPage = () => {
           height: "100vh",
         }}
       />
-    </LoadingPageWrapper>
+    </div>
   );
 };
 

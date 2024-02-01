@@ -3,7 +3,7 @@
 import { useProductStore } from "@/store/zustand";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ProductDetailsSection from "@/components/product-details-section";
+import ProductDetailsSection from "@/components/product-details-section/product-details-section";
 import {
   Images,
   ImagesContainer,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCartStore, useProductStore } from "@/store/zustand";
-import ImageNavigation from "@/components/cart-image-navigation";
+import ImageNavigation from "@/components/cart-image-navigation/cart-image-navigation";
 import {
   PageWrapper,
   ItemsSection,
@@ -91,7 +91,9 @@ export default function CartPage() {
                     </CurrencySymbol>
                     <Amount>
                       {selectedCurrencyPrice
-                        ? selectedCurrencyPrice.amount * item.quantity
+                        ? (
+                            selectedCurrencyPrice.amount * item.quantity
+                          ).toFixed(2)
                         : null}
                     </Amount>
                   </PriceDetailsContainer>

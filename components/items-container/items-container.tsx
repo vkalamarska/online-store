@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import Product from "./product";
+import Product from "../product/product";
 import { useProductStore } from "@/store/zustand";
 
 const ItemsWrapper = styled.div`

@@ -3,7 +3,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import Header from "@/components/header";
+import Header from "@/components/header/header";
 import styled from "styled-components";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
