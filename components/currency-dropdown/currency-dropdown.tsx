@@ -34,6 +34,7 @@ const Currency = ({
         <CurrencyList>
           {allCurrencies.map((c) => (
             <ListItem
+              key={c.label}
               onClick={() => {
                 handleSelectedCurrency(c.symbol);
                 setIsOpen(false);
