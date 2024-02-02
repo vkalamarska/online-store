@@ -1,15 +1,8 @@
 "use client";
 
-import styled from "styled-components";
 import Product from "../product/product";
 import { useProductStore } from "@/store/zustand";
-
-const ItemsWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 50px 75px;
-`;
+import { ItemsWrapper } from "./items-container.styles";
 
 const ItemsContainer = () => {
   const {
@@ -24,9 +17,11 @@ const ItemsContainer = () => {
 
   return (
     <ItemsWrapper>
-      {selectedCategory?.products.map((p) => (
-        <Product key={p.id} product={p} currentCurrency={currentCurrency} />
-      ))}
+      {selectedCategory?.products
+        .toSorted((a) => (a.inStock ? -1 : 1))
+        .map((p) => (
+          <Product key={p.id} product={p} currentCurrency={currentCurrency} />
+        ))}
     </ItemsWrapper>
   );
 };

@@ -40,11 +40,16 @@ import {
   CartIsEmpty,
   GoHomeButton,
 } from "./page.styles";
+import LoadingPage from "@/components/loading-page/loading-page";
 
 export default function CartPage() {
   const { cartItems, updateProductQuantity } = useCartStore();
 
   const { currentCurrency, products } = useProductStore();
+
+  if (!products.length && !currentCurrency) {
+    return <LoadingPage />;
+  }
 
   const totalValue = cartItems.reduce((sum, item) => {
     const itemMatch = products.find(
@@ -69,7 +74,7 @@ export default function CartPage() {
       <ItemsSection>
         <Cart>CART</Cart>
         {cartItems
-          ?.sort((a, b) => a.productId.localeCompare(b.productId))
+          ?.sort((a, b) => a.selectionId.localeCompare(b.selectionId))
           .map((item) => {
             const product = products.find(
               (product) => item.productId === product.id
@@ -151,7 +156,7 @@ export default function CartPage() {
               <FinalQuantityAmount>{totalQuantity}</FinalQuantityAmount>
             </FinalQuantityWrapper>
             <TotalAmountWrapper>
-              <TotalAmount>TotalAmount:</TotalAmount>
+              <TotalAmount>Total amount:</TotalAmount>
               <TotalAmountContainer>
                 <TotalCurrencySymbol>{currentCurrency}</TotalCurrencySymbol>
                 <TotalAmountValue>{totalValue.toFixed(2)}</TotalAmountValue>

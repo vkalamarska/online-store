@@ -57,8 +57,21 @@ type CartStore = {
   updateProductQuantity: (p: ICartItem, type: "increase" | "decrease") => void;
 };
 
+const getStoredCartItems = () => {
+  if (typeof window === "undefined") return [];
+
+  const storedCartItems = localStorage.getItem("cartItemsStorage");
+  return storedCartItems ? JSON.parse(storedCartItems) : [];
+};
+
+const setCartLocalStorage = (cartItems: ICartItem[]): ICartItem[] => {
+  localStorage.setItem("cartItemsStorage", JSON.stringify(cartItems));
+
+  return cartItems;
+};
+
 export const useCartStore = create<CartStore>((set) => ({
-  cartItems: [],
+  cartItems: getStoredCartItems(),
   addProductToCart: (item) =>
     set((store) => {
       const selectionId = `${item.productId}-${JSON.stringify(
@@ -75,15 +88,18 @@ export const useCartStore = create<CartStore>((set) => ({
         );
 
         return {
-          cartItems: [
+          cartItems: setCartLocalStorage([
             ...cartWithoutItem,
             { ...itemMatchInCart, quantity: itemMatchInCart.quantity + 1 },
-          ],
+          ]),
         };
       }
 
       return {
-        cartItems: [...store.cartItems, { ...item, selectionId }],
+        cartItems: setCartLocalStorage([
+          ...store.cartItems,
+          { ...item, selectionId },
+        ]),
       };
     }),
   updateProductQuantity: (item, type) =>
@@ -94,10 +110,10 @@ export const useCartStore = create<CartStore>((set) => ({
 
       if (type === "increase") {
         return {
-          cartItems: [
+          cartItems: setCartLocalStorage([
             ...cartWithoutItem,
             { ...item, quantity: item.quantity + 1 },
-          ],
+          ]),
         };
       }
 
@@ -105,12 +121,15 @@ export const useCartStore = create<CartStore>((set) => ({
 
       if (newQuantity <= 0) {
         return {
-          cartItems: cartWithoutItem,
+          cartItems: setCartLocalStorage(cartWithoutItem),
         };
       }
 
       return {
-        cartItems: [...cartWithoutItem, { ...item, quantity: newQuantity }],
+        cartItems: setCartLocalStorage([
+          ...cartWithoutItem,
+          { ...item, quantity: newQuantity },
+        ]),
       };
     }),
 }));
