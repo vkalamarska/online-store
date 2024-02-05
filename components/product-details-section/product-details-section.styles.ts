@@ -94,7 +94,7 @@ const Amount = styled.div`
   font-weight: bold;
 `;
 
-const ToCartButton = styled.button<{ outOfStock: boolean }>`
+const ToCartButton = styled.button<{ disabled: boolean }>`
   height: 40px;
   width: 100%;
   margin-bottom: 25px;
@@ -104,7 +104,7 @@ const ToCartButton = styled.button<{ outOfStock: boolean }>`
   cursor: pointer;
 
   ${(p) =>
-    p.outOfStock &&
+    p.disabled &&
     `
       filter: grayscale(60%) opacity(60%);
       cursor: auto;

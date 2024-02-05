@@ -3,7 +3,7 @@
 import { IPrices, IProduct } from "@/hooks/useStoreData";
 import { useCartStore } from "@/store/zustand";
 import getDefaultAttrs, { IAttributeState } from "@/utils/get-default-attrs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   ProductDetailsContainer,
@@ -33,6 +33,12 @@ const ProductDetailsSection = ({
   const [attributes, setAttributes] = useState<IAttributeState>(
     getDefaultAttrs(selectedProduct)
   );
+
+  useEffect(() => {
+    if (!attributes) return;
+
+    setAttributes(getDefaultAttrs(selectedProduct));
+  }, [selectedProduct]);
 
   const allAttributesSelected = Object.values(attributes).every(Boolean);
 
@@ -73,7 +79,7 @@ const ProductDetailsSection = ({
         <Amount>{selectedCurrencyPrice?.amount}</Amount>
       </PriceDetailsContainer>
       <ToCartButton
-        outOfStock={!allAttributesSelected || !selectedProduct?.inStock}
+        disabled={!allAttributesSelected || !selectedProduct?.inStock}
         onClick={() => {
           addProductToCart({
             productId: selectedProduct?.id,

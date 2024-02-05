@@ -86,7 +86,7 @@ export default function CartPage() {
               (price) => price.currency.symbol === currentCurrency
             );
             return (
-              <ProductContainer>
+              <ProductContainer key={item.selectionId}>
                 <LeftSection>
                   <Brand>{product.brand}</Brand>
                   <ProductName>{product.name}</ProductName>
@@ -102,15 +102,16 @@ export default function CartPage() {
                         : null}
                     </Amount>
                   </PriceDetailsContainer>
-                  {product?.attributes.map((a) => (
-                    <Attributes>
+                  {product?.attributes.map((a, i) => (
+                    <Attributes key={`${a.id}-${i}`}>
                       <AttributeName>{a.name}:</AttributeName>
                       <AttributeContainer>
-                        {a.items.map((i) => {
+                        {a.items.map((i, index) => {
                           const isColor = i.value.includes("#");
 
                           return (
                             <AttributeItems
+                              key={`${i.id}-${index}`}
                               isColor={isColor}
                               backgroundColor={i.value}
                               isSelected={item.attributes[a.id] === i.value}
