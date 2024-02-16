@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Link from "next/link";
+import { device } from "@/utils/device";
 
 const ItemContainer = styled(Link)<{ outOfStock: boolean }>`
   height: 400px;
@@ -21,6 +22,24 @@ const ItemContainer = styled(Link)<{ outOfStock: boolean }>`
     `
       filter: grayscale(90%) opacity(40%);
     `}
+
+  @media ${device.largeDesktop} {
+    margin: 20px 35px;
+  }
+
+  @media ${device.tablet} {
+    height: 240px;
+    width: 210px;
+    margin: 15px 6px;
+    padding: 0;
+  }
+
+  @media ${device.mobile} {
+    height: 190px;
+    width: 130px;
+    margin: 15px 6px;
+    padding: 0;
+  }
 `;
 
 const ItemImageContainer = styled.div`
@@ -55,6 +74,10 @@ const ItemName = styled.span`
   margin: 0 0 10px 0;
   font-size: 18px;
   color: #1d1f22;
+
+  @media ${device.mobile} {
+    font-size: 14px;
+  }
 `;
 
 const ItemPriceContainer = styled.span`
@@ -65,12 +88,20 @@ const Currency = styled.span`
   font-size: 18px;
   color: black;
   font-weight: bold;
+
+  @media ${device.mobile} {
+    font-size: 14px;
+  }
 `;
 
 const ItemIPrice = styled.span`
   font-size: 18px;
   color: black;
   font-weight: bold;
+
+  @media ${device.mobile} {
+    font-size: 14px;
+  }
 `;
 
 export {

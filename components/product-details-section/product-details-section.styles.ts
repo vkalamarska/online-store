@@ -1,16 +1,42 @@
 "use client";
 
 import styled from "styled-components";
+import { device } from "@/utils/device";
 
 const ProductDetailsContainer = styled.div`
   width: 20%;
   display: flex;
   flex-direction: column;
+
+  @media ${device.largeDesktop} {
+    width: 15%;
+  }
+
+  @media ${device.tablet} {
+    width: 30%;
+  }
+
+  @media ${device.mobile} {
+    width: 100%;
+    margin: 15px 0;
+  }
 `;
 
 const Brand = styled.div`
   font-size: 22px;
   font-weight: bold;
+
+  @media ${device.desktop} {
+    font-size: 28px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 17px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 17px;
+  }
 `;
 
 const ProductName = styled.div`
@@ -109,6 +135,10 @@ const ToCartButton = styled.button<{ disabled: boolean }>`
       filter: grayscale(60%) opacity(60%);
       cursor: auto;
     `}
+
+  @media ${device.mobile} {
+    width: 50%;
+  }
 `;
 
 const Description = styled.div`

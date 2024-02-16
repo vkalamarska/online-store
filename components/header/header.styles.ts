@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Logo from "../../assets/logo.png";
 import ShoppingCart from "../../assets/shopping-cart.png";
 import Link from "next/link";
+import { device } from "../../utils/device";
 
 const HeaderWrapper = styled.section`
   width: 100%;
@@ -12,6 +13,19 @@ const HeaderWrapper = styled.section`
   align-items: center;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+
+  @media ${device.largeDesktop} {
+    padding: 0 300px;
+    height: 80px;
+  }
+
+  @media ${device.tablet} {
+    padding: 0 35px;
+  }
+
+  @media ${device.mobile} {
+    padding: 0 15px;
+  }
 `;
 
 const CategoryContainer = styled.div`
@@ -35,6 +49,15 @@ const Category = styled(Link)<{ isCurrentCategory: boolean }>`
     color: #5ece7b;
     border-bottom: none;
   }
+
+  @media ${device.largeDesktop} {
+    font-size: 18px;
+  }
+
+  @media ${device.mobile} {
+    margin-right: 15px;
+    font-size: 12px;
+  }
 `;
 
 const LogoButton = styled(Link)`
@@ -46,6 +69,10 @@ const LogoButton = styled(Link)`
   background-position: center;
   border: none;
   cursor: pointer;
+
+  @media ${device.mobile} {
+    visibility: hidden;
+  }
 `;
 
 const ShoppingCartWrapper = styled.div`
