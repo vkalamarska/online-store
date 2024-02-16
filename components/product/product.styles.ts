@@ -31,14 +31,14 @@ const ItemContainer = styled(Link)<{ outOfStock: boolean }>`
     height: 240px;
     width: 210px;
     margin: 15px 6px;
-    padding: 0;
+    padding: 10px;
   }
 
   @media ${device.mobile} {
     height: 190px;
     width: 130px;
     margin: 15px 6px;
-    padding: 0;
+    padding: 10px;
   }
 `;
 

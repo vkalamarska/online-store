@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import ArrowLeft from "../../assets/arrow-left.png";
 import ArrowRight from "../../assets/arrow-right.png";
+import { device } from "@/utils/device";
 
 const ProductImage = styled.div<{ imageUrl: string }>`
   height: 100%;
@@ -14,6 +15,15 @@ const ProductImage = styled.div<{ imageUrl: string }>`
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+
+  @media ${device.largeDesktop} {
+    width: 160px;
+  }
+
+  @media ${device.mobile} {
+    height: 70%;
+    width: 120px;
+  }
 `;
 
 const Navigaton = styled.div`

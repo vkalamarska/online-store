@@ -2,13 +2,11 @@
 
 import styled from "styled-components";
 import Link from "next/link";
+import { device } from "@/utils/device";
 
 const PageWrapper = styled.section`
   width: 100%;
   min-height: 100%;
-  background-color: white;
-  display: flex;
-  color: black;
 `;
 
 const ItemsSection = styled.div`
@@ -17,6 +15,22 @@ const ItemsSection = styled.div`
   padding: 0 75px;
   display: flex;
   flex-direction: column;
+
+  @media ${device.largeDesktop} {
+    margin: 75px 0;
+    padding: 0 400px;
+  }
+
+  @media ${device.tablet} {
+    margin: 35px 0 50px 0;
+    padding: 0 35px;
+    justify-content: space-between;
+  }
+
+  @media ${device.mobile} {
+    margin: 35px 0;
+    padding: 0 15px;
+  }
 `;
 
 const Cart = styled.div`
@@ -24,6 +38,11 @@ const Cart = styled.div`
   font-size: 25px;
   font-weight: 600;
   border-bottom: 1px solid #e5e5e5;
+
+  @media ${device.mobile} {
+    padding-bottom: 20px;
+    font-size: 18px;
+  }
 `;
 
 const ProductContainer = styled.div`
@@ -32,6 +51,10 @@ const ProductContainer = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #e5e5e5;
+
+  @media ${device.largeDesktop} {
+    padding: 30px 0;
+  }
 `;
 
 const LeftSection = styled.div`
@@ -42,11 +65,28 @@ const LeftSection = styled.div`
 const Brand = styled.div`
   font-size: 22px;
   font-weight: bold;
+
+  @media ${device.largeDesktop} {
+    font-size: 28px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 16px;
+  }
 `;
 
 const ProductName = styled.div`
   margin: 3px 0 16px 0;
   font-size: 22px;
+
+  @media ${device.largeDesktop} {
+    margin-bottom: 18px;
+    font-size: 28px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 16px;
+  }
 `;
 
 const PriceDetailsContainer = styled.div`
@@ -58,6 +98,14 @@ const CurrencySymbol = styled.div`
   font-size: 18px;
   color: black;
   font-weight: bold;
+
+  @media ${device.largeDesktop} {
+    font-size: 22px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 14px;
+  }
 `;
 
 const Amount = styled.div`
@@ -65,6 +113,15 @@ const Amount = styled.div`
   font-size: 18px;
   color: black;
   font-weight: bold;
+
+  @media ${device.largeDesktop} {
+    margin-bottom: 18px;
+    font-size: 22px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 14px;
+  }
 `;
 
 const Attributes = styled.div``;
@@ -73,11 +130,23 @@ const AttributeName = styled.div`
   margin-bottom: 4px;
   font-size: 15px;
   font-weight: bold;
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const AttributeContainer = styled.div`
   margin-bottom: 16px;
   display: flex;
+
+  @media ${device.largeDesktop} {
+    margin-bottom: 18px;
+  }
+
+  @media ${device.mobile} {
+    margin-bottom: 10px;
+  }
 `;
 
 const AttributeItems = styled.button<{
@@ -111,10 +180,22 @@ ${(p) =>
     `
   box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
   `}
+
+@media ${device.mobile} {
+    height: 20px;
+    width: ${(p) => (p.isColor ? "20px" : "30px")};
+    margin-right: 6px;
+    font-size: 8px;
+  }
 `;
 
 const RightSection = styled.div`
   display: flex;
+
+  @media ${device.mobile} {
+    flex-direction: column-reverse;
+    justify-content: space-between;
+  }
 `;
 
 const QuantityContainer = styled.div`
@@ -122,6 +203,16 @@ const QuantityContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media ${device.largeDesktop} {
+    margin-right: 50px;
+  }
+
+  @media ${device.mobile} {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 0 0 10px 0;
+  }
 `;
 
 const PlusButtonContainer = styled.button`
@@ -134,11 +225,21 @@ const PlusButtonContainer = styled.button`
   background-color: transparent;
   border: 1px solid black;
   cursor: pointer;
+
+  @media ${device.mobile} {
+    height: 20px;
+    width: 20px;
+    font-size: 10px;
+  }
 `;
 
 const Quantity = styled.div`
   align-self: center;
   font-size: 12px;
+
+  @media ${device.largeDesktop} {
+    font-size: 15px;
+  }
 `;
 
 const MinusButtonContainer = styled.button`
@@ -152,6 +253,12 @@ const MinusButtonContainer = styled.button`
   border: 1px solid black;
   align-items: center;
   cursor: pointer;
+
+  @media ${device.mobile} {
+    height: 20px;
+    width: 20px;
+    font-size: 10px;
+  }
 `;
 
 const TaxWrapper = styled.div`
@@ -162,6 +269,14 @@ const TaxWrapper = styled.div`
 const Tax = styled.span`
   margin-right: 3px;
   font-size: 15px;
+
+  @media ${device.largeDesktop} {
+    font-size: 18px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const TaxContainer = styled.div`
@@ -171,11 +286,27 @@ const TaxContainer = styled.div`
 const TaxCurrencySymbol = styled.span`
   font-size: 15px;
   font-weight: bold;
+
+  @media ${device.largeDesktop} {
+    font-size: 18px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const TaxAmount = styled.span`
   font-size: 15px;
   font-weight: bold;
+
+  @media ${device.largeDesktop} {
+    font-size: 18px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const FinalQuantityWrapper = styled.div`
@@ -186,11 +317,27 @@ const FinalQuantityWrapper = styled.div`
 const FinalQuantity = styled.span`
   margin-right: 3px;
   font-size: 15px;
+
+  @media ${device.largeDesktop} {
+    font-size: 18px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const FinalQuantityAmount = styled.span`
   font-size: 15px;
   font-weight: bold;
+
+  @media ${device.largeDesktop} {
+    font-size: 18px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const TotalAmountWrapper = styled.div`
@@ -201,6 +348,14 @@ const TotalAmountWrapper = styled.div`
 const TotalAmount = styled.span`
   margin-right: 3px;
   font-size: 15px;
+
+  @media ${device.largeDesktop} {
+    font-size: 18px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const TotalAmountContainer = styled.div`
@@ -210,11 +365,27 @@ const TotalAmountContainer = styled.div`
 const TotalCurrencySymbol = styled.span`
   font-size: 15px;
   font-weight: bold;
+
+  @media ${device.largeDesktop} {
+    font-size: 18px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const TotalAmountValue = styled.span`
   font-size: 15px;
   font-weight: bold;
+
+  @media ${device.largeDesktop} {
+    font-size: 18px;
+  }
+
+  @media ${device.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const Order = styled.div`
@@ -228,6 +399,12 @@ const Order = styled.div`
   background-color: #5ece7b;
   color: white;
   cursor: pointer;
+
+  @media ${device.mobile} {
+    height: 28px;
+    width: 40%;
+    font-size: 12px;
+  }
 `;
 
 const CartIsEmptyContainer = styled.div`
@@ -240,6 +417,10 @@ const CartIsEmptyContainer = styled.div`
 
 const CartIsEmpty = styled.div`
   font-size: 25px;
+
+  @media ${device.mobile} {
+    font-size: 20px;
+  }
 `;
 
 const GoHomeButton = styled(Link)`
