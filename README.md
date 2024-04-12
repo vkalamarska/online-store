@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Online Store
 
-## Getting Started
+Online store app with cart functionality using an external GraphQL API. Includes functionality for filtering products by category and selecting different attributes for each item.
 
-First, run the development server:
+**[Live demo](https://online-store-vk.vercel.app/)**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎨 Tech stack
+- TypeScript
+- React
+- Styled-components
+- NextJS
+- Zustand
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Main features
+- State management with Zustand
+- NextJS App router
+- Validation of user selection
+- Use of local storage
+- Product filtering and sorting
+- RWD
+- Currency selection
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📸 Screenshots
+![Screenshot](https://github.com/vkalamarska/online-store/assets/112348805/49e28413-1e98-4473-8d29-92b8386f7d30)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
+![Screenshot](https://github.com/vkalamarska/online-store/assets/112348805/7a217c86-b1e8-4bdc-93a6-efeec4bc5d9a)
 
-## Learn More
+---
+![Screenshot](https://github.com/vkalamarska/online-store/assets/112348805/58190348-37ad-4ffd-8b00-2f5424040a35)
 
-To learn more about Next.js, take a look at the following resources:
+---
+![Screenshot](https://github.com/vkalamarska/online-store/assets/112348805/287a7ef3-8b1d-42bb-b347-3a2013638513)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
