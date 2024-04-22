@@ -32,6 +32,12 @@ Online store app with cart functionality using an external GraphQL API. Includes
 ---
 ![Screenshot](https://github.com/vkalamarska/online-store/assets/112348805/287a7ef3-8b1d-42bb-b347-3a2013638513)
 
+---
+![Screenshot](https://github.com/vkalamarska/online-store/assets/112348805/d3d8b035-d9a3-41ce-9ab5-c5629ac7a1b9)
+
+---
+![Screenshot](https://github.com/vkalamarska/online-store/assets/112348805/5ae0cb2c-74e6-46bd-bad1-1d71f3432671)
+
 
 
 
